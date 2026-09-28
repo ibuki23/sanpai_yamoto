@@ -1,0 +1,87 @@
+package aks.industrialwaste.recycle.printer;
+
+public interface MPT130SDefine {
+
+    public final static byte[] MTP_CAN = {0x18};//CAN
+    public final static byte[] MTP_ESC = {0x1b};//ESC
+    public final static byte[] MTP_AND = {0x26};//&
+    public final static byte[] MTP_SUB = {0x1a};//SUB
+    public final static byte[] MTP_W = {0x57};//W
+    public final static byte[] MTP_w = {0x77};//w
+    public final static byte[] MTP_U = {0x55};//U
+    public final static byte[] MTP_C = {0x43};//C
+    public final static byte[] MTP_c = {0x63};//c
+    public final static byte[] MTP_l = {0x6c};//c
+    public final static byte[] MTP_V = {0x56};//V
+    public final static byte[] MTP_J = {0x4a};//J
+    public final static byte[] MTP_BS = {0x08};//BS
+    public final static byte[] MTP_NP = {0x0c};//NP
+    public final static byte[] MTP_SOH = {0x01};//SOH
+    public final static byte[] MTP_EOT = {0x04};//EOT
+    public final static byte[] MTP_SP = {0x20};//SP
+    public final static byte[] MTP_AT = {0x40};//@
+    public final static byte[] MTP_SI = {0x0f};//SI
+    public final static byte[] MTP_GS = {0x1d};//GS
+    public final static byte[] MTP_VT = {0x0b};//VT
+    public final static byte[] MTP_STX = {0x02};//STX
+    public final static byte[] MTP_ETX = {0x03};//ETX
+    public final static byte[] MTP_ENQ = {0x05};//ENQ
+    public final static byte[] MTP_ACK = {0x06};//ACK
+    public final static byte[] MTP_NAK = {0x15};//NAK
+    public final static byte[] MTP_FS = {0x1c};//FS
+    public final static byte[] MTP_b = {0x62};//b
+    public final static byte[] MTP_FF = {0x0c};//FF
+    public final static byte[] MTP_k = {0x6b};//k
+    public final static byte[] MTP_K = {0x4b};//K
+    public final static byte[] MTP_t = {0x74};//t
+    public final static byte[] MTP_X = {0x58};//X
+    public final static byte[] MTP_PLUS = {0x2b};//+
+    public final static byte[] MTP_B0 = {0xb0 - 256};//NAK
+    public final static byte[] MTP_2E = {0x2e};//X
+
+    public final static byte[] MTP_0 = "0".getBytes();
+    public final static byte[] MTP_150 = {0x96 - 256};//150
+    public final static byte[] MTP_120 = {0x78};//120
+    public final static byte[] MTP_110 = {0x6e};//110
+    public final static byte[] MTP_100 = {0x64};//100
+    public final static byte[] MTP_80 = {0x50};//80
+    public final static byte[] MTP_60 = {0x3c};//60
+    public final static byte[] MTP_50 = {0x32};//50
+    public final static byte[] MTP_40 = {0x28};//40
+    public final static byte[] MTP_10 = {0x0a};//10
+    public final static byte[] MTP_11 = {0x0b};//10
+    public final static byte[] MTP_30 = {0x1e};//30
+    public final static byte[] MTP_24 = {0x18};//24
+    public final static byte[] MTP_20 = {0x14};//20
+    public final static byte[] MTP_18 = {0x12};//18
+    public final static byte[] MTP_15 = {0x0f};//15
+    public final static byte[] MTP_14 = {0x0e};//14
+    public final static byte[] MTP_12 = {0x0c};//12
+    public final static byte[] MTP_9 = {0x09};//9
+    public final static byte[] MTP_8 = {0x08};//8
+    public final static byte[] MTP_7 = {0x07};//7
+    public final static byte[] MTP_6 = {0x06};//6
+    public final static byte[] MTP_5 = {0x05};//5
+    public final static byte[] MTP_4 = {0x04};//4
+    public final static byte[] MTP_3 = {0x03};//3
+    public final static byte[] MTP_2 = {0x02};//2
+    public final static byte[] MTP_1 = {0x01};//1
+    public final static byte[] MTP_SO = {0x0e};//SO
+    public final static byte[] MTP_Z = "Z".getBytes();//改行ドットピッチ 8/12行
+    public final static byte[] MTP_L1 = "L1".getBytes();//8/12行
+    public final static byte[] MTP_L2 = "L2".getBytes();//初回改行 計2.66行
+    public final static byte[] MTP_L3 = "L3".getBytes();//8/12行
+    public final static byte[] MTP_L4 = "L4".getBytes();//4/12行
+    public final static byte[] MTP_L6 = "L6".getBytes();
+    public final static byte[] MTP_L8 = "L8".getBytes();//MTP_L3
+    public final static byte[] MTP_S4 = "4".getBytes();//文字4
+
+    public final static byte[] MTP_CR = {0x0D};//CR
+    public final static byte[] MTP_LF = {0x0A};//LF
+    public final static byte[] MTP_33 = {0x21};//!
+    public final static byte[] MTP_16 = {0x10};//16
+    public final static byte[] MTP_L = {0x4c};//L
+    public final static byte[] MTP3 = {0x33};//CR
+    public final static byte[] MTP_1f = {0x1f};//1
+    public final static byte[] MTP_1d = {0x1d};//1
+}

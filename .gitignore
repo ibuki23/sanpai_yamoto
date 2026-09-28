@@ -1,0 +1,38 @@
+# ===== ビルド系 =====
+/build/
+/dist/
+/target/
+/out/
+
+# ===== NetBeans =====
+/nbproject/private/
+
+# ===== Java =====
+*.class
+*.jar
+*.war
+*.ear
+
+# ===== ログ =====
+*.log
+
+# ===== OS系 =====
+.DS_Store
+Thumbs.db
+
+# ===== 一時ファイル =====
+*.tmp
+*.template
+
+# ===== 設定ファイル等=====
+db.properties
+meter.properties
+soundBox.ini
+
+# ローカルパス系
+*.env
+# ===== 生成物・作業用 =====
+/javadoc/
+/tmp/
+/lock
+/lib/poi-3.10-FINAL/
