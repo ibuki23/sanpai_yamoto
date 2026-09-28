@@ -1923,9 +1923,10 @@ public class WeighListDetailsPane extends DetailsPanel2 {
                 columns_.put("売上区分", 売上区分cmb.getSelectedItem());
             }
             get単位(Integer.valueOf(goods_id_Field_.getText()));
+            // 数量(m3/ton/ℓ/台/枚/個)は利用者が入力した値を保持する。
+            // 以前はフォーカス移動のたびに ton 数量を正味重量から再計算していたため、
+            // 手入力した数量が上書きされていた。
             updateView();
-            set_ton_数量();
-            columns_.put("", ton数量());
         }
     }
 
@@ -2433,38 +2434,6 @@ public class WeighListDetailsPane extends DetailsPanel2 {
             jtbtn1.setSelected(true);
         }
         columns_.put("class", 1);
-    }
-
-    public static void set_ton_数量() {
-        String s = net_weightField_.getText();
-        if (s == null || s.isBlank()) {
-            return;
-        }
-
-        double 正味重量 = Double.parseDouble(s.replace(",", ""));
-        double 数量 = 正味重量 / 1000.0;
-
-        if ("数量(ton)".equals(lblm3.getText())) {
-            // 表示を整えたいなら DecimalFormat を使う
-            m3_Field_.setText(String.valueOf(数量));
-        }
-    }
-
-    public static double ton数量() {
-        String s = net_weightField_.getText();
-        if (s == null || s.isBlank()) {
-            return 0.0;
-        }
-
-        double 正味重量 = Double.parseDouble(s.replace(",", ""));
-        double 数量 = 正味重量 / 1000.0;
-
-        if ("数量(ton)".equals(lblm3.getText())) {
-            // 表示を整えたいなら DecimalFormat を使う
-            m3_Field_.setText(String.valueOf(数量));
-        }
-        return 数量;
-
     }
 
 }
