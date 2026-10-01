@@ -390,7 +390,7 @@ public class Agreement extends ListPanel {
         b.setMinimumSize(new Dimension(150, 30));
         b.setPreferredSize(new Dimension(150, 30));
         b.addActionListener(new 品目単価変更());
-        
+
         addContainer(
                  southPane_, b,
                  3, 0, 1, 1, 0.0, 0.0,

@@ -293,7 +293,6 @@ public class DailyReportPanel extends Panel {
                  GridBagConstraints.EAST, GridBagConstraints.NONE,
                  new Insets(2, 2, 2, 2), 0, 0);
 
-
         addContainer(
                  centerPane_, new JPanel(),
                  0, 15, 3, 1, 1.0, 1.0,
@@ -339,7 +338,7 @@ public class DailyReportPanel extends Panel {
                                                              : report_id == 5 ? "マニフェスト管理台帳"
                                                                       : report_id == 6 ? "業者集計表4"
                                                                                : report_id == 7 ? "計量記録一覧"
-                                                                                                                   : "") + ".xlsx"));
+                                                                                        : "") + ".xlsx"));
             } else {
                 fc.setSelectedFile(new File(DBManager.pass_,
                          (sdf_.format(DBManager.convert(c)) + "業者集計表5.xlsx")));

@@ -35,8 +35,7 @@ public class AD4401Recv implements AD4401Define {
     }
 
     /**
-     * CR/LF区切りの電文を1件受信する。
-     * TCPで電文が分割・結合されても処理できるよう、未処理分を保持する。
+     * CR/LF区切りの電文を1件受信する。 TCPで電文が分割・結合されても処理できるよう、未処理分を保持する。
      */
     public static synchronized int Recv(NPort nport, int tmout) {
         byte[] data = new byte[1024];
@@ -85,8 +84,7 @@ public class AD4401Recv implements AD4401Define {
     }
 
     /**
-     * AD-4401の標準的な符号付き重量形式と、添付された既存実装の
-     * ステータス付き形式を解析する。
+     * AD-4401の標準的な符号付き重量形式と、添付された既存実装の ステータス付き形式を解析する。
      */
     public static synchronized void SetData(byte[] data) {
         if (data == null) {

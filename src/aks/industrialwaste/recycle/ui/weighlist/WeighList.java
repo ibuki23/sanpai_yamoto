@@ -1549,7 +1549,6 @@ public class WeighList extends ListPanel implements Runnable {
         }
     }
 
-
     private void updatePostPrint(Connection con, long sno) {
         try {
             String s = new StringBuilder()

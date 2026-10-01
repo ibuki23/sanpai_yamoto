@@ -69,8 +69,7 @@ public class SystemSetting extends javax.swing.JPanel {
     }
 
     /**
-     * 消費税率の下に、1kg当たりの産廃税額入力欄を追加します。
-     * NetBeansの生成領域外で構築し、既存フォームへの影響を抑えています。
+     * 消費税率の下に、1kg当たりの産廃税額入力欄を追加します。 NetBeansの生成領域外で構築し、既存フォームへの影響を抑えています。
      */
     private void initWasteTaxSetting() {
         Font font14 = FontUtility.getFont("メイリオ", Font.PLAIN, 14);
