@@ -31,13 +31,23 @@ public class NPort {
 
         Close();//一旦終了
 
+        System.out.println(
+                "NPORT OPEN TRY " + mHostName + ":" + mHostPort
+                + " timeout=" + mTimeOut
+                + " thread=" + Thread.currentThread().getName());
+
         try {
 
             mSock = new Socket();
             mSock.connect(new InetSocketAddress(InetAddress.getByName(mHostName), mHostPort), mTimeOut);
             ret = NPORT_OK;
+            System.out.println(
+                    "NPORT OPEN OK " + mHostName + ":" + mHostPort
+                    + " thread=" + Thread.currentThread().getName());
         } catch (Exception e) {
-            System.out.println("nport-open-err/" + e + ":" + mHostName + ":" + mHostPort);
+            System.out.println(
+                    "nport-open-err/" + e + ":" + mHostName + ":" + mHostPort
+                    + " thread=" + Thread.currentThread().getName());
         }
 
         return ret;
@@ -77,7 +87,9 @@ public class NPort {
             mSock.getOutputStream().write(data, 0, len);
             ret = NPORT_OK;
         } catch (Exception e) {
-            System.out.println("nport-send-err/" + e + ":" + mHostName + ":" + mHostPort);
+            System.out.println(
+                    "nport-send-err/" + e + ":" + mHostName + ":" + mHostPort
+                    + " thread=" + Thread.currentThread().getName());
             Open();
         }
 
