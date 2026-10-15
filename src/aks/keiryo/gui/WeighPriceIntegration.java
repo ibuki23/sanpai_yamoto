@@ -149,6 +149,8 @@ public final class WeighPriceIntegration {
         JLabel kindLabel = (JLabel) field("kind_jLab").get(owner);
         JLabel carryName = (JLabel) field("carry_name_").get(owner);
         JLabel contractText = (JLabel) field("txt契約内容表示").get(owner);
+        Component officeLabel = (Component) field("office_jLab").get(owner);
+        Component officeSubName = (Component) field("office_sub_name_").get(owner);
         JComboBox salesCategoryCombo = (JComboBox) field("cmb売上区分").get(owner);
 
         panel.doLayout();
@@ -189,11 +191,30 @@ public final class WeighPriceIntegration {
         goodsPanel.add(priceCategoryCombo);
         goodsPanel.setComponentZOrder(priceCategoryCombo, 0);
 
-        // アスベストチェックも「掛け/現金」コンボと同じX座標から開始する。
-        // 右端までの幅に合わせ、表示が切れにくいようフォントを少し小さくする。
+        // 排出現場名の右端を、取扱品目名(kind_jLab)の右端と揃える。
+        int kindRightInPanel = goodsPanelBounds.x + kindWidth;
+        Rectangle officeBounds = new Rectangle(officeLabel.getBounds());
+        int officeWidth = Math.max(0, kindRightInPanel - officeBounds.x);
+        officeLabel.setBounds(officeBounds.x, officeBounds.y,
+                officeWidth, officeBounds.height);
+
+        // office_sub_name_ は右端を維持したまま、office_jLab の新しい右端から始める。
+        Rectangle officeSubBounds = new Rectangle(officeSubName.getBounds());
+        int officeSubRight = officeSubBounds.x + officeSubBounds.width;
+        int officeSubX = kindRightInPanel + gap;
+        int officeSubWidth = Math.max(0, officeSubRight - officeSubX);
+        officeSubName.setBounds(officeSubX, officeSubBounds.y,
+                officeSubWidth, officeSubBounds.height);
+
+        // アスベストチェックは「掛け/現金」コンボと同じX座標から開始する。
+        // txt契約内容表示の右端をチェックボックス手前まで縮め、重ならないようにする。
         Rectangle contractBounds = new Rectangle(contractText.getBounds());
         int asbestosX = salesComboBounds.x;
         int asbestosWidth = Math.max(105, panel.getWidth() - asbestosX - 4);
+        int contractRight = Math.max(contractBounds.x, asbestosX - gap);
+        int contractWidth = Math.max(0, contractRight - contractBounds.x);
+        contractText.setBounds(contractBounds.x, contractBounds.y,
+                contractWidth, contractBounds.height);
         asbestosCheck.setBounds(asbestosX, contractBounds.y,
                 asbestosWidth, Math.max(30, contractBounds.height));
 
@@ -209,6 +230,8 @@ public final class WeighPriceIntegration {
                  + " comboX=" + comboX
                  + " carryX=" + carryX
                  + " kindWidth=" + kindWidth
+                 + " officeRight=" + (officeBounds.x + officeWidth)
+                 + " contractWidth=" + contractWidth
                  + " asbestos=" + asbestosCheck.getBounds());
     }
 
