@@ -1,6 +1,7 @@
 package aks.industrialwaste.recycle.printer;
 
 import aks.industrialwaste.database.DBManager;
+import aks.keiryo.gui.WeighPriceIntegration;
 import aks.keiryo.sql.SQLCommon;
 import aks.keiryo.sql.SQLDefine;
 import aks.keiryo.status.IDEnvStruct;
@@ -21,6 +22,8 @@ public class MPT130SGetPrinterThread implements Runnable, MPT130SDefine {
     private long shipmentSno = -1;
 
     public MPT130SGetPrinterThread(Connection con) {
+        WeighPriceIntegration.install(con);
+
         sqlCommon = new SQLCommon(
                  DBManager.jdbc_, DBManager.getUser(), DBManager.getPassword());
 
