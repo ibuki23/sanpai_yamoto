@@ -35,9 +35,11 @@ import jp.co.astax.awt.FontUtility;
 public final class WeighPriceIntegration {
 
     private static boolean installed;
+    private static boolean syncing;
     private static JComboBox<String> priceCategoryCombo;
     private static JCheckBox asbestosCheck;
     private static JTextField goodsIdField;
+    private static JTextField carIdField;
     private static JTextField unitValueField;
     private static MainPanel owner;
     private static Connection con;
@@ -71,6 +73,7 @@ public final class WeighPriceIntegration {
     private static void installUi() throws Exception {
         JPanel panel = (JPanel) field("jPanel3").get(owner);
         goodsIdField = (JTextField) field("kind_no_tex").get(owner);
+        carIdField = (JTextField) field("car_id_").get(owner);
         unitValueField = (JTextField) field("unit_value_tex").get(owner);
 
         JLabel label = new JLabel("　料金区分");
@@ -114,6 +117,9 @@ public final class WeighPriceIntegration {
         ActionListener priceChanged = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (syncing) {
+                    return;
+                }
                 applySelection(true);
                 persistGateContext();
             }
@@ -125,6 +131,11 @@ public final class WeighPriceIntegration {
             public void insertUpdate(DocumentEvent e) { scheduleApply(); }
             public void removeUpdate(DocumentEvent e) { scheduleApply(); }
             public void changedUpdate(DocumentEvent e) { scheduleApply(); }
+        });
+        carIdField.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) { scheduleLoadContext(); }
+            public void removeUpdate(DocumentEvent e) { scheduleLoadContext(); }
+            public void changedUpdate(DocumentEvent e) { scheduleLoadContext(); }
         });
 
         hookWeighButton("weight_btn_計量処理");
@@ -155,6 +166,7 @@ public final class WeighPriceIntegration {
 
         panel.revalidate();
         panel.repaint();
+        loadGateContext();
         applySelection(false);
     }
 
@@ -182,6 +194,53 @@ public final class WeighPriceIntegration {
             @Override
             public void run() { applySelection(false); }
         });
+    }
+
+    private static void scheduleLoadContext() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                loadGateContext();
+                applySelection(false);
+            }
+        });
+    }
+
+    private static void loadGateContext() {
+        if (con == null || carIdField == null || priceCategoryCombo == null) {
+            return;
+        }
+        int carId = intValue(carIdField.getText());
+        syncing = true;
+        try {
+            if (carId <= 0) {
+                priceCategoryCombo.setSelectedIndex(GoodsPriceResolver.PRICE_CATEGORY_NORMAL);
+                asbestosCheck.setSelected(false);
+                return;
+            }
+            String sql = "select price_category, asbestos_flag from gate_in_data "
+                     + "where car_id=? and delete_flag<>true order by sno desc limit 1";
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setInt(1, carId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        int category = rs.getInt("price_category");
+                        if (category < 0 || category > 3) {
+                            category = 0;
+                        }
+                        priceCategoryCombo.setSelectedIndex(category);
+                        asbestosCheck.setSelected(rs.getBoolean("asbestos_flag"));
+                    } else {
+                        priceCategoryCombo.setSelectedIndex(GoodsPriceResolver.PRICE_CATEGORY_NORMAL);
+                        asbestosCheck.setSelected(false);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("WEIGH PRICE CONTEXT LOAD ERROR:" + e);
+        } finally {
+            syncing = false;
+        }
     }
 
     private static void applySelection(boolean showMessage) {
@@ -245,7 +304,7 @@ public final class WeighPriceIntegration {
     }
 
     private static void persistGateContext() {
-        if (MainPanel.mStatus == null || con == null) {
+        if (MainPanel.mStatus == null || con == null || priceCategoryCombo == null) {
             return;
         }
         int carId = MainPanel.mStatus.msRemote.GetInt("car_id");
