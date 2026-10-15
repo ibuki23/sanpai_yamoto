@@ -7,8 +7,14 @@
 --   * アスベスト含有時も新規 / 既存 / その他の3単価を持つ。
 --   * 現行 unit_value_a / b / c は既存コード互換のため当面残し、
 --     初回移行時に new / existing / other へ値をコピーする。
---   * 計量時のアスベスト有無を実績として保持できるよう、
---     gate_in_data / weigh_data に asbestos_flag を追加する。
+--   * 計量時の料金区分とアスベスト有無を実績として保持できるよう、
+--     gate_in_data / weigh_data に price_category / asbestos_flag を追加する。
+--
+-- price_category:
+--   0 = 通常
+--   1 = 新規
+--   2 = 既存
+--   3 = その他
 
 BEGIN;
 
@@ -49,11 +55,15 @@ COMMENT ON COLUMN public.m_goods_kind.unit_value_b IS '旧カラム: unit_value_
 COMMENT ON COLUMN public.m_goods_kind.unit_value_c IS '旧カラム: unit_value_otherへ移行（互換用）';
 
 ALTER TABLE public.gate_in_data
+    ADD COLUMN IF NOT EXISTS price_category smallint NOT NULL DEFAULT 0,
     ADD COLUMN IF NOT EXISTS asbestos_flag boolean NOT NULL DEFAULT false;
 
 ALTER TABLE public.weigh_data
+    ADD COLUMN IF NOT EXISTS price_category smallint NOT NULL DEFAULT 0,
     ADD COLUMN IF NOT EXISTS asbestos_flag boolean NOT NULL DEFAULT false;
 
+COMMENT ON COLUMN public.gate_in_data.price_category IS '料金区分 0:通常 1:新規 2:既存 3:その他';
+COMMENT ON COLUMN public.weigh_data.price_category IS '料金区分 0:通常 1:新規 2:既存 3:その他';
 COMMENT ON COLUMN public.gate_in_data.asbestos_flag IS 'アスベスト含有フラグ false:無 true:有';
 COMMENT ON COLUMN public.weigh_data.asbestos_flag IS 'アスベスト含有フラグ false:無 true:有';
 
