@@ -1,5 +1,6 @@
 package aks.industrialwaste.recycle.ui.master.goods;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -24,11 +25,19 @@ class GoodsPriceEditorPanel extends JPanel {
     private final JTextField asbestosUnitValueExistingField_ = new JTextField();
     private final JTextField asbestosUnitValueOtherField_ = new JTextField();
 
+    private final JPanel formPanel_ = new JPanel(new GridBagLayout());
+
     GoodsPriceEditorPanel() {
-        super(new GridBagLayout());
-        setBorder(BorderFactory.createTitledBorder("料金区分別単価"));
-        setMinimumSize(new Dimension(560, 320));
-        setPreferredSize(new Dimension(560, 320));
+        super(new BorderLayout());
+
+        // 親側がGridBagLayoutで右ペイン中央に寄せるため、外側パネルを
+        // 右ペイン相当の高さにして、その上端へ実際の入力パネルを配置する。
+        // 外側には枠を表示しないので、空き領域は見た目上の余白になる。
+        setOpaque(false);
+        setMinimumSize(new Dimension(560, 300));
+        setPreferredSize(new Dimension(560, 680));
+
+        formPanel_.setBorder(BorderFactory.createTitledBorder("料金区分別単価"));
 
         Font font14 = FontUtility.getFont("メイリオ", Font.PLAIN, 14);
         addPriceRow("新規単価", unitValueNewField_, 0, font14);
@@ -47,17 +56,10 @@ class GoodsPriceEditorPanel extends JPanel {
         gbc.weightx = 1.0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(8, 6, 6, 6);
-        add(note, gbc);
+        formPanel_.add(note, gbc);
 
-        JPanel filler = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 7;
-        gbc.gridwidth = 2;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        add(filler, gbc);
+        // 実際に見える料金入力パネルは常に上端へ配置する。
+        add(formPanel_, BorderLayout.NORTH);
     }
 
     private void addPriceRow(String labelText, JTextField field, int row, Font font) {
@@ -70,7 +72,7 @@ class GoodsPriceEditorPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(4, 6, 4, 6);
-        add(label, gbc);
+        formPanel_.add(label, gbc);
 
         field.setFont(font);
         field.setMinimumSize(new Dimension(150, 30));
@@ -83,7 +85,7 @@ class GoodsPriceEditorPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(4, 6, 4, 6);
-        add(field, gbc);
+        formPanel_.add(field, gbc);
     }
 
     void clear() {
