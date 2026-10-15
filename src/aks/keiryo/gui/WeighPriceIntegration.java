@@ -3,14 +3,9 @@ package aks.keiryo.gui;
 import aks.industrialwaste.recycle.util.GoodsPriceResolver;
 import aks.keiryo.status.Status;
 import java.awt.Component;
-import java.awt.KeyboardFocusManager;
-import java.awt.KeyEventDispatcher;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -79,10 +74,14 @@ public final class WeighPriceIntegration {
         priceCategoryCombo = new JComboBox<String>(new String[]{"通常", "新規", "既存", "その他"});
         priceCategoryCombo.setFont(FontUtility.getFont("メイリオ", java.awt.Font.PLAIN, 18));
         priceCategoryCombo.setToolTipText("料金区分");
+        // 既存画面は Enter / transferFocus() で入力欄を順番に移動する。
+        // 実行時追加したコンボがフォーカス順へ割り込まないようにする。
+        priceCategoryCombo.setFocusable(false);
 
         asbestosCheck = new JCheckBox("アスベスト含有");
         asbestosCheck.setFont(FontUtility.getFont("メイリオ", java.awt.Font.PLAIN, 14));
         asbestosCheck.setOpaque(false);
+        asbestosCheck.setFocusable(false);
 
         installControlsInExistingRows(panel);
 
@@ -100,41 +99,43 @@ public final class WeighPriceIntegration {
         asbestosCheck.addActionListener(priceChanged);
 
         goodsIdField.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) { scheduleApply(); }
-            public void removeUpdate(DocumentEvent e) { scheduleApply(); }
-            public void changedUpdate(DocumentEvent e) { scheduleApply(); }
-        });
-        carIdField.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) { scheduleLoadContext(); }
-            public void removeUpdate(DocumentEvent e) { scheduleLoadContext(); }
-            public void changedUpdate(DocumentEvent e) { scheduleLoadContext(); }
-        });
-
-        hookWeighButton("weight_btn_計量処理");
-        hookWeighButton("weight_btn_登録処理");
-
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
-                 new KeyEventDispatcher() {
             @Override
-            public boolean dispatchKeyEvent(KeyEvent e) {
-                if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    Component c = e.getComponent();
-                    try {
-                        if (c == field("weight_btn_計量処理").get(owner)
-                                 || c == field("weight_btn_登録処理").get(owner)) {
-                            prepareForWeigh();
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() { finishAfterWeigh(); }
-                            });
-                        }
-                    } catch (Exception ex) {
-                        System.out.println("WEIGH PRICE KEY ERROR:" + ex);
-                    }
-                }
-                return false;
+            public void insertUpdate(DocumentEvent e) {
+                scheduleApply();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                scheduleApply();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                scheduleApply();
             }
         });
+
+        carIdField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                scheduleLoadContext();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                scheduleLoadContext();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                scheduleLoadContext();
+            }
+        });
+
+        // Enter キーも JButton の ActionListener が発火するため、
+        // KeyboardFocusManager へグローバルな Enter フックを追加しない。
+        hookWeighButton("weight_btn_計量処理");
+        hookWeighButton("weight_btn_登録処理");
 
         panel.repaint();
         loadGateContext();
@@ -180,7 +181,8 @@ public final class WeighPriceIntegration {
 
         // cmb売上区分 は jPanel3 直下、料金区分コンボは jPanel1 内なので座標を変換する。
         int comboX = salesComboBounds.x - goodsPanelBounds.x;
-        comboX = Math.max(carryWidth + gap + 250, Math.min(comboX, goodsPanelWidth - comboWidth));
+        comboX = Math.max(carryWidth + gap + 250,
+                Math.min(comboX, goodsPanelWidth - comboWidth));
 
         // 搬入/搬出表示を料金区分コンボの左へ移動し、残りを品目名に使う。
         int carryX = comboX - gap - carryWidth;
@@ -227,30 +229,27 @@ public final class WeighPriceIntegration {
         panel.repaint();
 
         System.out.println(
-                 "WEIGH PRICE UI ALIGN salesX=" + salesComboBounds.x
-                 + " goodsPanelX=" + goodsPanelBounds.x
-                 + " comboX=" + comboX
-                 + " carryX=" + carryX
-                 + " kindWidth=" + kindWidth
-                 + " officeRight=" + (officeBounds.x + officeWidth)
-                 + " contractWidth=" + contractWidth
-                 + " asbestos=" + asbestosCheck.getBounds());
+                "WEIGH PRICE UI ALIGN salesX=" + salesComboBounds.x
+                + " goodsPanelX=" + goodsPanelBounds.x
+                + " comboX=" + comboX
+                + " carryX=" + carryX
+                + " kindWidth=" + kindWidth
+                + " officeRight=" + (officeBounds.x + officeWidth)
+                + " contractWidth=" + contractWidth
+                + " asbestos=" + asbestosCheck.getBounds());
     }
 
     private static void hookWeighButton(String fieldName) throws Exception {
         final JButton button = (JButton) field(fieldName).get(owner);
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                prepareForWeigh();
-            }
-        });
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                prepareForWeigh();
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
-                    public void run() { finishAfterWeigh(); }
+                    public void run() {
+                        finishAfterWeigh();
+                    }
                 });
             }
         });
@@ -294,6 +293,7 @@ public final class WeighPriceIntegration {
         if (con == null || carIdField == null || priceCategoryCombo == null || syncing) {
             return;
         }
+
         int carId = intValue(carIdField.getText());
         syncing = true;
         try {
@@ -302,8 +302,9 @@ public final class WeighPriceIntegration {
                 asbestosCheck.setSelected(false);
                 return;
             }
+
             String sql = "select price_category, asbestos_flag from gate_in_data "
-                     + "where car_id=? and delete_flag<>true order by sno desc limit 1";
+                    + "where car_id=? and delete_flag<>true order by sno desc limit 1";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setInt(1, carId);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -328,9 +329,11 @@ public final class WeighPriceIntegration {
     }
 
     private static void applySelection(boolean showMessage) {
-        if (syncing || MainPanel.mStatus == null || priceCategoryCombo == null || asbestosCheck == null) {
+        if (syncing || MainPanel.mStatus == null
+                || priceCategoryCombo == null || asbestosCheck == null) {
             return;
         }
+
         int category = priceCategoryCombo.getSelectedIndex();
         boolean asbestos = asbestosCheck.isSelected();
         MainPanel.mStatus.msRemote.mValue.put("price_category", category);
@@ -387,12 +390,14 @@ public final class WeighPriceIntegration {
 
     private static void finishAfterWeigh() {
         persistGateContext();
-        int carId = MainPanel.mStatus == null ? 0 : MainPanel.mStatus.msRemote.GetInt("car_id");
+        int carId = MainPanel.mStatus == null
+                ? 0 : MainPanel.mStatus.msRemote.GetInt("car_id");
         if (carId <= 0 || beforeWeighSno < 0) {
             return;
         }
+
         String sql = "update weigh_data set price_category=?, asbestos_flag=? "
-                 + "where sno > ? and car_id=?";
+                + "where sno > ? and car_id=?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, priceCategoryCombo.getSelectedIndex());
             ps.setBoolean(2, asbestosCheck.isSelected());
@@ -408,12 +413,14 @@ public final class WeighPriceIntegration {
         if (MainPanel.mStatus == null || con == null || priceCategoryCombo == null) {
             return;
         }
+
         int carId = MainPanel.mStatus.msRemote.GetInt("car_id");
         if (carId <= 0) {
             return;
         }
+
         String sql = "update gate_in_data set price_category=?, asbestos_flag=?, unit_value=? "
-                 + "where car_id=? and delete_flag<>true";
+                + "where car_id=? and delete_flag<>true";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, priceCategoryCombo.getSelectedIndex());
             ps.setBoolean(2, asbestosCheck.isSelected());
@@ -426,7 +433,8 @@ public final class WeighPriceIntegration {
     }
 
     private static long maxWeighSno() {
-        try (PreparedStatement ps = con.prepareStatement("select coalesce(max(sno),0) from weigh_data");
+        try (PreparedStatement ps = con.prepareStatement(
+                "select coalesce(max(sno),0) from weigh_data");
              ResultSet rs = ps.executeQuery()) {
             return rs.next() ? rs.getLong(1) : 0L;
         } catch (Exception e) {
