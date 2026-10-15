@@ -65,6 +65,7 @@ public class GoodsDetailsPane extends DetailsPanel {
     private JTextField gravity_Field_;
     private JTextField unitField_, unit_value_a_, unit_value_b_, unit_value_c_;
     private JTextField transUnitField_;
+    private GoodsPriceEditorPanel priceEditor_;
 
     //20120827
     private String[] final_goods_kind_;
@@ -443,32 +444,10 @@ public class GoodsDetailsPane extends DetailsPanel {
                  GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
                  new Insets(2, 2, 2, 2), 0, 0);
 
-        // 単価
-        label = new JLabel("請求単価(A)", JLabel.LEFT);
-        label.setFont(font14);
+        // 旧A/B/C欄は互換用データ保持のため残す（画面には表示しない）
         unit_value_a_ = new JTextField();
-        unit_value_a_.setFont(font14);
-        unit_value_a_.setMinimumSize(new Dimension(150, 30));
-        unit_value_a_.setPreferredSize(new Dimension(150, 30));
-        unit_value_a_.addFocusListener(new ColumnUpdater());
-
-        // 単価
-        label = new JLabel("請求単価(B)", JLabel.LEFT);
-        label.setFont(font14);
         unit_value_b_ = new JTextField();
-        unit_value_b_.setFont(font14);
-        unit_value_b_.setMinimumSize(new Dimension(150, 30));
-        unit_value_b_.setPreferredSize(new Dimension(150, 30));
-        unit_value_b_.addFocusListener(new ColumnUpdater());
-
-        // 単価
-        label = new JLabel("請求単価(C)", JLabel.LEFT);
-        label.setFont(font14);
         unit_value_c_ = new JTextField();
-        unit_value_c_.setFont(font14);
-        unit_value_c_.setMinimumSize(new Dimension(150, 30));
-        unit_value_c_.setPreferredSize(new Dimension(150, 30));
-        unit_value_c_.addFocusListener(new ColumnUpdater());
 
         // 運搬単価
         label = new JLabel("運搬単価", JLabel.LEFT);
@@ -566,6 +545,13 @@ public class GoodsDetailsPane extends DetailsPanel {
                  GridBagConstraints.EAST, GridBagConstraints.BOTH,
                  new Insets(2, 2, 2, 2), 0, 0);
 
+        priceEditor_ = new GoodsPriceEditorPanel();
+        addContainer(
+                 pane, priceEditor_,
+                 0, 0, 1, 1, 1.0, 0.0,
+                 GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
+                 new Insets(8, 8, 8, 8), 0, 0);
+
         // 削除ボタンは使用しない.
         deleteButton_.setVisible(false);
     }
@@ -579,6 +565,9 @@ public class GoodsDetailsPane extends DetailsPanel {
 
     @Override
     protected void doRegister() {
+
+        // 料金区分別単価は登録ボタン押下時に確実にMapへ反映する。
+        priceEditor_.saveTo(columns_);
 
         try {
             //重複登録の確認
@@ -734,6 +723,8 @@ public class GoodsDetailsPane extends DetailsPanel {
             unit_value_c_.setText(String.valueOf(o));
         }
 
+        priceEditor_.loadFrom(columns_);
+
         o = columns_.get("trans_unit_value");
         if (o instanceof Number) {
             transUnitField_.setText(String.valueOf(o));
@@ -780,6 +771,15 @@ public class GoodsDetailsPane extends DetailsPanel {
 
             columns_.put("unit_no", 0);
             columns_.put("unit_value", 0);
+            columns_.put("unit_value_new", 0);
+            columns_.put("unit_value_existing", 0);
+            columns_.put("unit_value_other", 0);
+            columns_.put("asbestos_unit_value_new", 0);
+            columns_.put("asbestos_unit_value_existing", 0);
+            columns_.put("asbestos_unit_value_other", 0);
+            columns_.put("unit_value_a", 0);
+            columns_.put("unit_value_b", 0);
+            columns_.put("unit_value_c", 0);
             columns_.put("trans_unit_value", 0);
 
             //20120822 add
@@ -810,6 +810,7 @@ public class GoodsDetailsPane extends DetailsPanel {
         unit_value_a_.setText("0");
         unit_value_b_.setText("0");
         unit_value_c_.setText("0");
+        priceEditor_.clear();
         transUnitField_.setText("0");
         //20121024 add
         bill_nameField_.setText("");
