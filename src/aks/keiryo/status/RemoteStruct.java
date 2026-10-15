@@ -57,6 +57,9 @@ public class RemoteStruct extends CommonStruct {
         putEx("m3", "", TYPE_INTEGER);
         putEx("unit_value", "", TYPE_INTEGER);
         putEx("charge_value", "", TYPE_INTEGER);
+        //料金区分・アスベスト判定
+        putEx("price_category", "0", TYPE_INTEGER);
+        putEx("asbestos_flag", "false", TYPE_BOOLEAN);
         //契約内容表示
         putEx("契約内容表示", "", TYPE_STRING);
         putEx("売上区分", "", TYPE_STRING);
