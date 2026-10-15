@@ -67,4 +67,36 @@ COMMENT ON COLUMN public.weigh_data.price_category IS '料金区分 0:通常 1:�
 COMMENT ON COLUMN public.gate_in_data.asbestos_flag IS 'アスベスト含有フラグ false:無 true:有';
 COMMENT ON COLUMN public.weigh_data.asbestos_flag IS 'アスベスト含有フラグ false:無 true:有';
 
+-- 2回計量など、滞留データから計量実績が作られる場合は
+-- 料金区分とアスベスト有無を自動的に計量実績へ引き継ぐ。
+CREATE OR REPLACE FUNCTION public.copy_price_context_to_weigh_data()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_price_category smallint;
+    v_asbestos_flag boolean;
+BEGIN
+    IF NEW.gate_in_sno IS NOT NULL AND NEW.gate_in_sno <> 0 THEN
+        SELECT g.price_category, g.asbestos_flag
+          INTO v_price_category, v_asbestos_flag
+          FROM public.gate_in_data g
+         WHERE g.sno = NEW.gate_in_sno
+         LIMIT 1;
+
+        IF FOUND THEN
+            NEW.price_category := COALESCE(v_price_category, 0);
+            NEW.asbestos_flag := COALESCE(v_asbestos_flag, false);
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS trg_copy_price_context_to_weigh_data ON public.weigh_data;
+CREATE TRIGGER trg_copy_price_context_to_weigh_data
+BEFORE INSERT ON public.weigh_data
+FOR EACH ROW
+EXECUTE FUNCTION public.copy_price_context_to_weigh_data();
+
 COMMIT;
