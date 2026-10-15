@@ -25,12 +25,20 @@ public final class GoodsPriceResolver {
         }
 
         String column = resolveColumn(priceCategory, asbestos);
+        if (column == null) {
+            return 0;
+        }
         Object value = goods.get(column);
         return value instanceof Number ? ((Number) value).intValue() : 0;
     }
 
     public static int resolve(Connection con, int goodsId, int priceCategory, boolean asbestos)
              throws SQLException {
+        String column = resolveColumn(priceCategory, asbestos);
+        if (column == null) {
+            return 0;
+        }
+
         String sql = "select unit_value, unit_value_new, unit_value_existing, unit_value_other, "
                  + "asbestos_unit_value_new, asbestos_unit_value_existing, asbestos_unit_value_other "
                  + "from m_goods_kind where id = ? and delete_flag = false order by sno limit 1";
@@ -40,7 +48,7 @@ public final class GoodsPriceResolver {
                 if (!rs.next()) {
                     return 0;
                 }
-                return rs.getInt(resolveColumn(priceCategory, asbestos));
+                return rs.getInt(column);
             }
         }
     }
@@ -69,10 +77,9 @@ public final class GoodsPriceResolver {
                 return "asbestos_unit_value_other";
             case PRICE_CATEGORY_NORMAL:
             default:
-                // アスベスト有りで通常区分は業務上使用しない想定。
-                // 未設定の区分で誤って通常単価へフォールバックすると過少請求に
-                // つながるため、0を返せる存在しないキーを使用する。
-                return "asbestos_unit_value_normal";
+                // アスベスト有りでは新規/既存/その他のいずれかを必須とする。
+                // 通常単価へフォールバックすると過少請求につながるため0扱いにする。
+                return null;
         }
     }
 }
