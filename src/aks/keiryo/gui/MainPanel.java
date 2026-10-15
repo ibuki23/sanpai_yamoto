@@ -1417,7 +1417,6 @@ public class MainPanel extends javax.swing.JPanel {
         jPanel3.setMaximumSize(new java.awt.Dimension(800, 420));
         jPanel3.setMinimumSize(new java.awt.Dimension(800, 420));
         jPanel3.setPreferredSize(new java.awt.Dimension(800, 420));
-        jPanel3.setLayout(new java.awt.GridBagLayout());
 
         jLabel10.setBackground(new java.awt.Color(0, 51, 153));
         jLabel10.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1429,12 +1428,6 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel10.setMinimumSize(new java.awt.Dimension(150, 30));
         jLabel10.setOpaque(true);
         jLabel10.setPreferredSize(new java.awt.Dimension(150, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanel3.add(jLabel10, gridBagConstraints);
 
         jLabel11.setBackground(new java.awt.Color(0, 51, 153));
         jLabel11.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1446,12 +1439,6 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel11.setMinimumSize(new java.awt.Dimension(150, 30));
         jLabel11.setOpaque(true);
         jLabel11.setPreferredSize(new java.awt.Dimension(150, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanel3.add(jLabel11, gridBagConstraints);
 
         jLabel12.setBackground(new java.awt.Color(0, 51, 153));
         jLabel12.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1463,12 +1450,6 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel12.setMinimumSize(new java.awt.Dimension(150, 30));
         jLabel12.setOpaque(true);
         jLabel12.setPreferredSize(new java.awt.Dimension(150, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanel3.add(jLabel12, gridBagConstraints);
 
         car_id_.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         car_id_.setHorizontalAlignment(aks.swing.JTextField.RIGHT);
@@ -1490,12 +1471,6 @@ public class MainPanel extends javax.swing.JPanel {
                 car_id_KeyPressed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
-        jPanel3.add(car_id_, gridBagConstraints);
 
         ent_no_tex.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         ent_no_tex.setHorizontalAlignment(aks.swing.JTextField.RIGHT);
@@ -1517,12 +1492,6 @@ public class MainPanel extends javax.swing.JPanel {
                 ent_no_texKeyPressed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
-        jPanel3.add(ent_no_tex, gridBagConstraints);
 
         trans_no_tex.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         trans_no_tex.setHorizontalAlignment(aks.swing.JTextField.RIGHT);
@@ -1544,12 +1513,6 @@ public class MainPanel extends javax.swing.JPanel {
                 trans_no_texKeyPressed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
-        jPanel3.add(trans_no_tex, gridBagConstraints);
 
         kind_no_tex.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         kind_no_tex.setHorizontalAlignment(aks.swing.JTextField.RIGHT);
@@ -1571,12 +1534,6 @@ public class MainPanel extends javax.swing.JPanel {
                 kind_no_texKeyPressed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
-        jPanel3.add(kind_no_tex, gridBagConstraints);
 
         office_no_tex.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         office_no_tex.setHorizontalAlignment(aks.swing.JTextField.RIGHT);
@@ -1598,12 +1555,6 @@ public class MainPanel extends javax.swing.JPanel {
                 office_no_texKeyPressed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
-        jPanel3.add(office_no_tex, gridBagConstraints);
 
         cont_no_tex.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         cont_no_tex.setHorizontalAlignment(aks.swing.JTextField.RIGHT);
@@ -1625,12 +1576,6 @@ public class MainPanel extends javax.swing.JPanel {
                 cont_no_texKeyPressed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
-        jPanel3.add(cont_no_tex, gridBagConstraints);
 
         jLabel13.setBackground(new java.awt.Color(0, 51, 153));
         jLabel13.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1642,12 +1587,6 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel13.setMinimumSize(new java.awt.Dimension(150, 30));
         jLabel13.setOpaque(true);
         jLabel13.setPreferredSize(new java.awt.Dimension(150, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanel3.add(jLabel13, gridBagConstraints);
 
         jLabel14.setBackground(new java.awt.Color(0, 51, 153));
         jLabel14.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1659,12 +1598,6 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel14.setMinimumSize(new java.awt.Dimension(150, 30));
         jLabel14.setOpaque(true);
         jLabel14.setPreferredSize(new java.awt.Dimension(150, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanel3.add(jLabel14, gridBagConstraints);
 
         jLabel15.setBackground(new java.awt.Color(0, 51, 153));
         jLabel15.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1676,12 +1609,6 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel15.setMinimumSize(new java.awt.Dimension(150, 30));
         jLabel15.setOpaque(true);
         jLabel15.setPreferredSize(new java.awt.Dimension(150, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanel3.add(jLabel15, gridBagConstraints);
 
         jLabel16.setBackground(new java.awt.Color(0, 51, 153));
         jLabel16.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1693,12 +1620,6 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel16.setMinimumSize(new java.awt.Dimension(150, 30));
         jLabel16.setOpaque(true);
         jLabel16.setPreferredSize(new java.awt.Dimension(150, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanel3.add(jLabel16, gridBagConstraints);
 
         jLabel18.setBackground(new java.awt.Color(0, 51, 153));
         jLabel18.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1710,12 +1631,6 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel18.setMinimumSize(new java.awt.Dimension(150, 30));
         jLabel18.setOpaque(true);
         jLabel18.setPreferredSize(new java.awt.Dimension(150, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanel3.add(jLabel18, gridBagConstraints);
 
         car_kind_no_tex.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         car_kind_no_tex.setHorizontalAlignment(aks.swing.JTextField.RIGHT);
@@ -1737,12 +1652,6 @@ public class MainPanel extends javax.swing.JPanel {
                 car_kind_no_texKeyPressed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 9;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
-        jPanel3.add(car_kind_no_tex, gridBagConstraints);
 
         jLabel20.setBackground(new java.awt.Color(0, 51, 153));
         jLabel20.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1753,12 +1662,6 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel20.setMinimumSize(new java.awt.Dimension(150, 30));
         jLabel20.setOpaque(true);
         jLabel20.setPreferredSize(new java.awt.Dimension(150, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanel3.add(jLabel20, gridBagConstraints);
 
         sanpai_tex.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         sanpai_tex.setHorizontalAlignment(aks.swing.JTextField.RIGHT);
@@ -1779,13 +1682,6 @@ public class MainPanel extends javax.swing.JPanel {
                 sanpai_texKeyPressed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 11;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 15, 5);
-        jPanel3.add(sanpai_tex, gridBagConstraints);
 
         kensetu_tex.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         kensetu_tex.setHorizontalAlignment(aks.swing.JTextField.RIGHT);
@@ -1806,13 +1702,6 @@ public class MainPanel extends javax.swing.JPanel {
                 kensetu_texKeyPressed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
-        jPanel3.add(kensetu_tex, gridBagConstraints);
 
         count_jLab.setBackground(new java.awt.Color(204, 255, 255));
         count_jLab.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1824,12 +1713,6 @@ public class MainPanel extends javax.swing.JPanel {
         count_jLab.setMinimumSize(new java.awt.Dimension(80, 35));
         count_jLab.setOpaque(true);
         count_jLab.setPreferredSize(new java.awt.Dimension(80, 35));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
-        jPanel3.add(count_jLab, gridBagConstraints);
 
         ent_jLab.setBackground(new java.awt.Color(204, 255, 255));
         ent_jLab.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1839,13 +1722,6 @@ public class MainPanel extends javax.swing.JPanel {
         ent_jLab.setMinimumSize(new java.awt.Dimension(150, 35));
         ent_jLab.setOpaque(true);
         ent_jLab.setPreferredSize(new java.awt.Dimension(150, 35));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 5);
-        jPanel3.add(ent_jLab, gridBagConstraints);
 
         trans_jLab.setBackground(new java.awt.Color(204, 255, 255));
         trans_jLab.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1855,13 +1731,6 @@ public class MainPanel extends javax.swing.JPanel {
         trans_jLab.setMinimumSize(new java.awt.Dimension(150, 35));
         trans_jLab.setOpaque(true);
         trans_jLab.setPreferredSize(new java.awt.Dimension(150, 35));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 5);
-        jPanel3.add(trans_jLab, gridBagConstraints);
 
         office_jLab.setBackground(new java.awt.Color(204, 255, 255));
         office_jLab.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1871,13 +1740,6 @@ public class MainPanel extends javax.swing.JPanel {
         office_jLab.setMinimumSize(new java.awt.Dimension(400, 35));
         office_jLab.setOpaque(true);
         office_jLab.setPreferredSize(new java.awt.Dimension(400, 35));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 5);
-        jPanel3.add(office_jLab, gridBagConstraints);
 
         cont_jLab.setBackground(new java.awt.Color(204, 255, 255));
         cont_jLab.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1886,13 +1748,6 @@ public class MainPanel extends javax.swing.JPanel {
         cont_jLab.setMinimumSize(new java.awt.Dimension(150, 35));
         cont_jLab.setOpaque(true);
         cont_jLab.setPreferredSize(new java.awt.Dimension(150, 35));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 5);
-        jPanel3.add(cont_jLab, gridBagConstraints);
 
         car_kind_jLab.setBackground(new java.awt.Color(204, 255, 255));
         car_kind_jLab.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1901,13 +1756,6 @@ public class MainPanel extends javax.swing.JPanel {
         car_kind_jLab.setMinimumSize(new java.awt.Dimension(150, 35));
         car_kind_jLab.setOpaque(true);
         car_kind_jLab.setPreferredSize(new java.awt.Dimension(150, 35));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 9;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 5);
-        jPanel3.add(car_kind_jLab, gridBagConstraints);
 
         jLabel22.setBackground(new java.awt.Color(0, 51, 153));
         jLabel22.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1918,12 +1766,6 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel22.setMinimumSize(new java.awt.Dimension(150, 30));
         jLabel22.setOpaque(true);
         jLabel22.setPreferredSize(new java.awt.Dimension(150, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 11;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 15, 5);
-        jPanel3.add(jLabel22, gridBagConstraints);
 
         jLabel23.setBackground(new java.awt.Color(0, 51, 153));
         jLabel23.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1934,13 +1776,6 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel23.setMinimumSize(new java.awt.Dimension(70, 30));
         jLabel23.setOpaque(true);
         jLabel23.setPreferredSize(new java.awt.Dimension(70, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        jPanel3.add(jLabel23, gridBagConstraints);
 
         bill_no_tex.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         bill_no_tex.setHorizontalAlignment(aks.swing.JTextField.RIGHT);
@@ -1962,12 +1797,6 @@ public class MainPanel extends javax.swing.JPanel {
                 bill_no_texKeyPressed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
-        jPanel3.add(bill_no_tex, gridBagConstraints);
 
         bill_jLab.setBackground(new java.awt.Color(204, 255, 255));
         bill_jLab.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
@@ -1977,13 +1806,6 @@ public class MainPanel extends javax.swing.JPanel {
         bill_jLab.setMinimumSize(new java.awt.Dimension(590, 35));
         bill_jLab.setOpaque(true);
         bill_jLab.setPreferredSize(new java.awt.Dimension(590, 35));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 5);
-        jPanel3.add(bill_jLab, gridBagConstraints);
 
         office_sub_name_.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         office_sub_name_.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
@@ -2003,13 +1825,6 @@ public class MainPanel extends javax.swing.JPanel {
                 office_sub_name_KeyPressed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 5);
-        jPanel3.add(office_sub_name_, gridBagConstraints);
 
         jPanel4.setMaximumSize(new java.awt.Dimension(300, 86));
         jPanel4.setMinimumSize(new java.awt.Dimension(300, 86));
@@ -2194,15 +2009,6 @@ public class MainPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 2, 0, 2);
         jPanel4.add(empty_input, gridBagConstraints);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        jPanel3.add(jPanel4, gridBagConstraints);
-
         jLabel24.setBackground(new java.awt.Color(0, 51, 153));
         jLabel24.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(255, 255, 255));
@@ -2213,12 +2019,6 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel24.setMinimumSize(new java.awt.Dimension(150, 30));
         jLabel24.setOpaque(true);
         jLabel24.setPreferredSize(new java.awt.Dimension(150, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanel3.add(jLabel24, gridBagConstraints);
 
         car_no_.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         car_no_.setHorizontalAlignment(aks.swing.JTextField.RIGHT);
@@ -2239,12 +2039,6 @@ public class MainPanel extends javax.swing.JPanel {
                 car_no_KeyPressed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        jPanel3.add(car_no_, gridBagConstraints);
 
         sub_message_.setFont(new java.awt.Font("メイリオ", 0, 24)); // NOI18N
         sub_message_.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -2253,14 +2047,6 @@ public class MainPanel extends javax.swing.JPanel {
         sub_message_.setMinimumSize(new java.awt.Dimension(295, 35));
         sub_message_.setOpaque(true);
         sub_message_.setPreferredSize(new java.awt.Dimension(600, 35));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 5);
-        jPanel3.add(sub_message_, gridBagConstraints);
 
         jPanel1.setMaximumSize(new java.awt.Dimension(100, 35));
         jPanel1.setMinimumSize(new java.awt.Dimension(100, 35));
@@ -2296,14 +2082,6 @@ public class MainPanel extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         jPanel1.add(carry_name_, gridBagConstraints);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 5);
-        jPanel3.add(jPanel1, gridBagConstraints);
-
         jButton9.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         jButton9.setText("ID検索");
         jButton9.setFocusable(false);
@@ -2321,11 +2099,6 @@ public class MainPanel extends javax.swing.JPanel {
                 jButton9ActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
-        jPanel3.add(jButton9, gridBagConstraints);
 
         txt契約内容表示.setFont(new java.awt.Font("メイリオ", 0, 24)); // NOI18N
         txt契約内容表示.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -2334,14 +2107,6 @@ public class MainPanel extends javax.swing.JPanel {
         txt契約内容表示.setMinimumSize(new java.awt.Dimension(530, 35));
         txt契約内容表示.setOpaque(true);
         txt契約内容表示.setPreferredSize(new java.awt.Dimension(530, 35));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 5);
-        jPanel3.add(txt契約内容表示, gridBagConstraints);
 
         cmb売上区分.setFont(new java.awt.Font("メイリオ", 0, 18)); // NOI18N
         cmb売上区分.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "掛け", "現金" }));
@@ -2349,12 +2114,173 @@ public class MainPanel extends javax.swing.JPanel {
         cmb売上区分.setMinimumSize(new java.awt.Dimension(130, 35));
         cmb売上区分.setOpaque(true);
         cmb売上区分.setPreferredSize(new java.awt.Dimension(130, 35));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 5);
-        jPanel3.add(cmb売上区分, gridBagConstraints);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(count_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(sub_message_, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(car_id_, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(car_no_, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
+                .addComponent(txt契約内容表示, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(bill_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(bill_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(cmb売上区分, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(ent_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(ent_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(office_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(office_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(office_sub_name_, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(kind_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(trans_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(trans_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(cont_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(cont_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(car_kind_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(car_kind_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(kensetu_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sanpai_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 646, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(4, 4, 4)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(count_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sub_message_, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(car_id_, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(car_no_, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt契約内容表示, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(bill_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bill_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmb売上区分, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ent_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ent_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(office_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(office_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(office_sub_name_, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(kind_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(trans_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(trans_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cont_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cont_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(car_kind_no_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(car_kind_jLab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(kensetu_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(sanpai_tex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
