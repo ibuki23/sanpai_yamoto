@@ -34,6 +34,8 @@ public final class WeighPriceIntegration {
 
     private static boolean installed;
     private static boolean syncing;
+    private static boolean applyScheduled;
+    private static boolean contextLoadScheduled;
     private static JComboBox<String> priceCategoryCombo;
     private static JCheckBox asbestosCheck;
     private static JTextField goodsIdField;
@@ -255,16 +257,33 @@ public final class WeighPriceIntegration {
     }
 
     private static void scheduleApply() {
+        if (syncing || applyScheduled) {
+            return;
+        }
+        applyScheduled = true;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run() { applySelection(false); }
+            public void run() {
+                applyScheduled = false;
+                if (!syncing) {
+                    applySelection(false);
+                }
+            }
         });
     }
 
     private static void scheduleLoadContext() {
+        if (syncing || contextLoadScheduled) {
+            return;
+        }
+        contextLoadScheduled = true;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                contextLoadScheduled = false;
+                if (syncing) {
+                    return;
+                }
                 loadGateContext();
                 applySelection(false);
             }
@@ -272,7 +291,7 @@ public final class WeighPriceIntegration {
     }
 
     private static void loadGateContext() {
-        if (con == null || carIdField == null || priceCategoryCombo == null) {
+        if (con == null || carIdField == null || priceCategoryCombo == null || syncing) {
             return;
         }
         int carId = intValue(carIdField.getText());
@@ -309,7 +328,7 @@ public final class WeighPriceIntegration {
     }
 
     private static void applySelection(boolean showMessage) {
-        if (MainPanel.mStatus == null || priceCategoryCombo == null || asbestosCheck == null) {
+        if (syncing || MainPanel.mStatus == null || priceCategoryCombo == null || asbestosCheck == null) {
             return;
         }
         int category = priceCategoryCombo.getSelectedIndex();
@@ -323,23 +342,40 @@ public final class WeighPriceIntegration {
         }
 
         if (asbestos && category == GoodsPriceResolver.PRICE_CATEGORY_NORMAL) {
-            unitValueField.setText("0");
-            MainPanel.mStatus.SetData(Status.INDEX_UNIT_VALUE, "0");
+            setUnitValue(0);
             if (showMessage) {
-                MainPanel.mStatus.SetData(Status.INDEX_MESSAGE,
-                         "アスベスト含有時は新規・既存・その他の料金区分を選択してください。");
+                setMessage("アスベスト含有時は新規・既存・その他の料金区分を選択してください。");
             }
-            owner.UpdateView(MainPanel.mStatus.msRemote);
             return;
         }
 
         try {
             int price = GoodsPriceResolver.resolve(con, goodsId, category, asbestos);
-            unitValueField.setText(String.valueOf(price));
-            MainPanel.mStatus.SetData(Status.INDEX_UNIT_VALUE, String.valueOf(price));
-            owner.UpdateView(MainPanel.mStatus.msRemote);
+            setUnitValue(price);
         } catch (Exception e) {
             System.out.println("WEIGH PRICE RESOLVE ERROR:" + e);
+        }
+    }
+
+    /**
+     * MainPanel.UpdateView() を呼ぶと管理ID・品目ID等が再設定され、DocumentListener が
+     * 再発火してループするため、単価欄とステータス値だけを直接更新する。
+     */
+    private static void setUnitValue(int value) {
+        String text = String.valueOf(value);
+        if (unitValueField != null && !text.equals(unitValueField.getText())) {
+            unitValueField.setText(text);
+        }
+        MainPanel.mStatus.SetData(Status.INDEX_UNIT_VALUE, text);
+    }
+
+    private static void setMessage(String message) {
+        MainPanel.mStatus.SetData(Status.INDEX_MESSAGE, message);
+        try {
+            JLabel messageLabel = (JLabel) field("jLbl_message").get(owner);
+            messageLabel.setText(message);
+        } catch (Exception e) {
+            System.out.println("WEIGH PRICE MESSAGE ERROR:" + e);
         }
     }
 
