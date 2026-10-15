@@ -54,6 +54,7 @@ public class GoodsTableModel extends AbstractTableModel {
 
     public static final int COLUMN_RYUBE = 22;
 
+    // 旧A/B/Cは既存コード互換用として残す
     public static final int COLUMN_UNIT_VALUE_A = 23;
     public static final int COLUMN_UNIT_VALUE_B = 24;
     public static final int COLUMN_UNIT_VALUE_C = 25;
@@ -87,7 +88,6 @@ public class GoodsTableModel extends AbstractTableModel {
         "f警報",
         //        "d在庫量",
         "sno"
-
     };
 
     protected static Logger logger_
@@ -135,6 +135,10 @@ public class GoodsTableModel extends AbstractTableModel {
                               (null == search) ? (new SearchCondition[0]) : (search),
                               (null == sort) ? (new SortCondition[0]) : (sort),
                               0);
+            PreparedStatement pricePs = con_.prepareStatement(
+                     "select unit_value_new, unit_value_existing, unit_value_other, "
+                     + "asbestos_unit_value_new, asbestos_unit_value_existing, asbestos_unit_value_other "
+                     + "from m_goods_kind where sno = ?");
             try {
                 ResultSet rs = ps.executeQuery();
                 ResultSetMetaData md = rs.getMetaData();
@@ -163,9 +167,22 @@ public class GoodsTableModel extends AbstractTableModel {
                         }
                     }
 
+                    // v0_goods_kindを変更せず、新料金列だけ実テーブルから補完する。
+                    pricePs.setObject(1, columns.get("sno"));
+                    try (ResultSet priceRs = pricePs.executeQuery()) {
+                        if (priceRs.next()) {
+                            columns.put("unit_value_new", priceRs.getInt("unit_value_new"));
+                            columns.put("unit_value_existing", priceRs.getInt("unit_value_existing"));
+                            columns.put("unit_value_other", priceRs.getInt("unit_value_other"));
+                            columns.put("asbestos_unit_value_new", priceRs.getInt("asbestos_unit_value_new"));
+                            columns.put("asbestos_unit_value_existing", priceRs.getInt("asbestos_unit_value_existing"));
+                            columns.put("asbestos_unit_value_other", priceRs.getInt("asbestos_unit_value_other"));
+                        }
+                    }
                     rows_.add(columns);
                 }
             } finally {
+                pricePs.close();
                 ps.close();
             }
         } catch (SQLException e) {
@@ -190,10 +207,10 @@ public class GoodsTableModel extends AbstractTableModel {
                          .append("unit_no, unit_value, ")
                          .append("middle_goods_kind, final_goods_kind, tax_kind, carry_class, ")
                          .append("b_class_id, bill_name, bill_name2, ryube, ")
+                         .append("unit_value_new, unit_value_existing, unit_value_other, ")
+                         .append("asbestos_unit_value_new, asbestos_unit_value_existing, asbestos_unit_value_other, ")
                          .append("unit_value_a, unit_value_b, unit_value_c, f按分フラグ, f有効) ")
-                         .append("values(?, ?, ?, ?, ?,")
-                         .append("?, ?, ?, ?, ?,")
-                         .append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")
+                         .append("values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")
                          .toString();
 
                 PreparedStatement ps = con_.prepareStatement(s);
@@ -206,24 +223,26 @@ public class GoodsTableModel extends AbstractTableModel {
                     ps.setObject(6, newdata.get("method_id2"));
                     ps.setObject(7, newdata.get("unit_no"));
                     ps.setObject(8, newdata.get("unit_value"));
-                    //20120822 add
                     ps.setObject(9, newdata.get("middle_goods_kind"));
                     ps.setObject(10, newdata.get("final_goods_kind"));
                     ps.setObject(11, newdata.get("tax_kind"));
                     ps.setObject(12, newdata.get("carry_class"));
-                    //20121024 add
                     ps.setObject(13, newdata.get("b_class_id"));
                     ps.setObject(14, newdata.get("bill_name"));
                     ps.setObject(15, newdata.get("bill_name2"));
                     ps.setObject(16, newdata.get("ryube"));
-
-                    ps.setObject(17, newdata.get("unit_value_a"));
-                    ps.setObject(18, newdata.get("unit_value_b"));
-                    ps.setObject(19, newdata.get("unit_value_c"));
-                    ps.setObject(20, newdata.get("f按分フラグ"));
-                    //f有効
-                    ps.setObject(21, newdata.get("f有効"));
-
+                    ps.setObject(17, price(newdata, "unit_value_new"));
+                    ps.setObject(18, price(newdata, "unit_value_existing"));
+                    ps.setObject(19, price(newdata, "unit_value_other"));
+                    ps.setObject(20, price(newdata, "asbestos_unit_value_new"));
+                    ps.setObject(21, price(newdata, "asbestos_unit_value_existing"));
+                    ps.setObject(22, price(newdata, "asbestos_unit_value_other"));
+                    // 旧A/B/Cへも同じ値を書き、旧処理との互換性を維持する。
+                    ps.setObject(23, price(newdata, "unit_value_new"));
+                    ps.setObject(24, price(newdata, "unit_value_existing"));
+                    ps.setObject(25, price(newdata, "unit_value_other"));
+                    ps.setObject(26, newdata.get("f按分フラグ"));
+                    ps.setObject(27, newdata.get("f有効"));
                     ps.executeUpdate();
                 } finally {
                     ps.close();
@@ -255,10 +274,14 @@ public class GoodsTableModel extends AbstractTableModel {
                          .append("name = ?, official_name = ?, ")
                          .append("option1 = ?, method_id1= ?, method_id2 = ?, ")
                          .append("unit_no = ?, unit_value = ?, id = ?, ")
-                         .append("middle_goods_kind = ?, final_goods_kind= ?, tax_kind = ?, ") //20121016 add
-                         .append("carry_class = ?, ") //20121024 add
+                         .append("middle_goods_kind = ?, final_goods_kind= ?, tax_kind = ?, ")
+                         .append("carry_class = ?, ")
                          .append("b_class_id = ?, bill_name = ?, bill_name2 = ?, ")
-                         .append("ryube = ?, unit_value_a = ?, unit_value_b = ?, unit_value_c = ?, f按分フラグ = ?, f有効 = ? ")
+                         .append("ryube = ?, ")
+                         .append("unit_value_new = ?, unit_value_existing = ?, unit_value_other = ?, ")
+                         .append("asbestos_unit_value_new = ?, asbestos_unit_value_existing = ?, asbestos_unit_value_other = ?, ")
+                         .append("unit_value_a = ?, unit_value_b = ?, unit_value_c = ?, ")
+                         .append("f按分フラグ = ?, f有効 = ? ")
                          .append("where sno = ?;")
                          .toString();
                 PreparedStatement ps = con_.prepareStatement(s);
@@ -271,25 +294,26 @@ public class GoodsTableModel extends AbstractTableModel {
                     ps.setObject(6, updata.get("unit_no"));
                     ps.setObject(7, updata.get("unit_value"));
                     ps.setObject(8, updata.get("id"));
-                    //20120822 add
                     ps.setObject(9, updata.get("middle_goods_kind"));
                     ps.setObject(10, updata.get("final_goods_kind"));
                     ps.setObject(11, updata.get("tax_kind"));
-
-                    //20121015 add
                     ps.setObject(12, updata.get("carry_class"));
-                    //20121015 add
                     ps.setObject(13, updata.get("b_class_id"));
                     ps.setObject(14, updata.get("bill_name"));
                     ps.setObject(15, updata.get("bill_name2"));
                     ps.setObject(16, updata.get("ryube"));
-                    ps.setObject(17, updata.get("unit_value_a"));
-                    ps.setObject(18, updata.get("unit_value_b"));
-                    ps.setObject(19, updata.get("unit_value_c"));
-                    ps.setObject(20, updata.get("f按分フラグ"));
-                    ps.setObject(21, updata.get("f有効"));
-                    //f有効
-                    ps.setObject(22, updata.get("sno"));
+                    ps.setObject(17, price(updata, "unit_value_new"));
+                    ps.setObject(18, price(updata, "unit_value_existing"));
+                    ps.setObject(19, price(updata, "unit_value_other"));
+                    ps.setObject(20, price(updata, "asbestos_unit_value_new"));
+                    ps.setObject(21, price(updata, "asbestos_unit_value_existing"));
+                    ps.setObject(22, price(updata, "asbestos_unit_value_other"));
+                    ps.setObject(23, price(updata, "unit_value_new"));
+                    ps.setObject(24, price(updata, "unit_value_existing"));
+                    ps.setObject(25, price(updata, "unit_value_other"));
+                    ps.setObject(26, updata.get("f按分フラグ"));
+                    ps.setObject(27, updata.get("f有効"));
+                    ps.setObject(28, updata.get("sno"));
                     ps.executeUpdate();
                 } finally {
                     ps.close();
@@ -308,6 +332,11 @@ public class GoodsTableModel extends AbstractTableModel {
         }
 
         return true;
+    }
+
+    private int price(Map<String, Object> data, String key) {
+        Object value = data.get(key);
+        return value instanceof Number ? ((Number) value).intValue() : 0;
     }
 
     public boolean delete(int row) {
@@ -357,46 +386,28 @@ public class GoodsTableModel extends AbstractTableModel {
                 out.newLine();
                 synchronized (rows_) {
                     for (Map<String, Object> columns : rows_) {
-                        // id
                         Integer i = (Integer) columns.get("id");
                         StringBuilder sb = new StringBuilder().append(i).append(",");
-                        // 名称
                         String s = (String) columns.get("name");
                         sb = sb.append(s).append(",");
-                        // 正式名称
                         s = (String) columns.get("official_name");
                         sb = sb.append(s).append(",");
-
-                        //中間最終区分
                         s = (String) columns.get("option1_name");
                         sb = sb.append(s).append(",");
-                        // 搬入搬出区分　carry_name
                         s = (String) columns.get("carry_name");
                         sb = sb.append(s).append(",");
-                        //単位
                         s = (String) columns.get("unit_name");
                         sb = sb.append(s).append(",");
-                        //行政報告大分類１
                         s = (String) columns.get("middle_goods_kind_name");
                         sb = sb.append(s).append(",");
-                        //final_goods_kind_name
-                        //行政報告大分類２
                         s = (String) columns.get("final_goods_kind_name");
                         sb = sb.append(s).append(",");
-
-                        //請求分類
                         s = (String) columns.get("b_class_name");
                         sb = sb.append(s).append(",");
-
-                        //請求名称
                         s = (String) columns.get("bill_name");
                         sb = sb.append(s).append(",");
-
-                        //標準単価
                         i = (Integer) columns.get("unit_value");
                         sb = sb.append(i).append(",");
-
-                        //ryube 比重
                         Double d = (Double) columns.get("ryube");
                         sb = sb.append(d);
 
@@ -415,7 +426,6 @@ public class GoodsTableModel extends AbstractTableModel {
     public int import_master() {
         int ret = 0;
         try {
-
             Statement st = con_.createStatement();
             st.executeUpdate("begin;");
             try {
@@ -453,7 +463,6 @@ public class GoodsTableModel extends AbstractTableModel {
 
     //既設プラント契約マスタ取込
     public boolean import_master1() {
-
         try {
             Statement st = con_.createStatement();
             st.executeUpdate("begin;");
@@ -497,7 +506,6 @@ public class GoodsTableModel extends AbstractTableModel {
 
     //新設プラント契約マスタ取込
     public boolean import_master2() {
-
         try {
             Statement st = con_.createStatement();
             st.executeUpdate("begin;");
