@@ -58,7 +58,7 @@ public class GroupableTableHeader extends JTableHeader {
         Enumeration en = columnGroups.elements();
         while (en.hasMoreElements()) {
             ColumnGroup cGroup = (ColumnGroup) en.nextElement();
-            cGroup.setColumnMargin(0/*columnMargin*/);
+            cGroup.setColumnMargin(0);
         }
     }
 

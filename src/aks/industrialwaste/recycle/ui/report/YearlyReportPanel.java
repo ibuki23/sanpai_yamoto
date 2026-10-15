@@ -22,12 +22,6 @@ import javax.swing.JPanel;
 import jp.co.astax.awt.FontUtility;
 import jp.co.astax.swing.DateTimeField;
 
-/**
- * 年報の印刷操作をするためのパネル
- *
- * @author K.Kuroda
- * @version 1.00
- */
 public class YearlyReportPanel extends Panel {
 
     private Connection con_;

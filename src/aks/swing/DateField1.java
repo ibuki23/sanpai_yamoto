@@ -68,7 +68,6 @@ public class DateField1 extends javax.swing.JPanel {
             cmbDay.setVisible(false);
             cmbHour.setVisible(false);
             cmbMinute.setVisible(false);
-//        jLabel2.setVisible(true);
             jLabel4.setVisible(false);
             jLabel3.setVisible(false);
         } else if (Y == MODE) {

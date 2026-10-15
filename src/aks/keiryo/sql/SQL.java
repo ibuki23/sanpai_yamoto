@@ -87,7 +87,7 @@ public class SQL implements SQLDefine {
     //クローズ処理
     public void Close() {
         try {
-            if (mStatement != null /*&& !mStatement.isClosed()*/) {
+            if (mStatement != null) {
                 mStatement.close();
             }
 

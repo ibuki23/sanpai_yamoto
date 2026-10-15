@@ -18,8 +18,6 @@ class MPT130SPrintCommandBuilder implements MPT130SDefine {
     private static final Charset PRINT_CHARSET = Charset.forName("MS932");
     private static final String FULL_WIDTH_SPACE = "　";
 
-    private MPT130SPrintCommandBuilder() {
-    }
 
     static List<byte[]> build(ShipmentStruct shipment) {
         List<byte[]> commands = new ArrayList<byte[]>();

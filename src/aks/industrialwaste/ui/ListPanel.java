@@ -9,18 +9,9 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import jp.co.astax.awt.FontUtility;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * 自動出荷分析システムのデータを一覧表示するパネルです.<br>
- * 自動出荷分析システムの各データを一覧表示する機能は, このクラスを継承して作成 すること.
- *
- * @author K.Kuroda
- * @version 2.0.0
- * @since 1.0.0
- */
 public class ListPanel extends Panel {
 
     public static final int MAX_RECORD_COUNT = 3000;

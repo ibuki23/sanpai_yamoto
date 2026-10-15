@@ -26,6 +26,12 @@ public class MPT130SGetPrinterThread implements Runnable, MPT130SDefine {
 
         IDEnvStruct setting = new IDEnvStruct();
         sqlCommon.GetIDEnv(setting, SQLDefine.PRINTER_TABLE_NAME, "100");
+        System.out.println(
+                 "MPT130S CONFIG address=" + setting.mAddress
+                 + " port=" + setting.mPort
+                 + " timeout=" + setting.mTimeout
+                 + " table=" + SQLDefine.PRINTER_TABLE_NAME
+        );
         transport = new MPT130STcpTransport(
                  setting.mAddress, setting.mPort, setting.mTimeout);
         setup();

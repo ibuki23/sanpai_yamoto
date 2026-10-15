@@ -860,9 +860,6 @@ public class GeneralFunctionPane extends javax.swing.JPanel {
         tmpSearchList_.add(condition);
     }
 
-    /*
-   * TableのデータをSortListﾆ登録
-     */
     private void addTmpSortList(Column column, SortOrder order) {
         SortCondition condition = new SortCondition();
         condition.setColumn(column);
@@ -871,9 +868,6 @@ public class GeneralFunctionPane extends javax.swing.JPanel {
         tmpSortList_.add(condition);
     }
 
-    /*
-   * TableのデータをSearchListﾆ登録
-     */
     private void moveTmpSearchList(int start, int end) {
         SearchCondition condition = tmpSearchList_.get(start);
         tmpSearchList_.remove(start);
@@ -881,9 +875,6 @@ public class GeneralFunctionPane extends javax.swing.JPanel {
         tmpSearchList_.add(end, condition);
     }
 
-    /*
-   * TableのデータをSortListﾆ登録
-     */
     private void moveTmpSortList(int start, int end) {
         SortCondition condition = tmpSortList_.get(start);
         tmpSortList_.remove(start);

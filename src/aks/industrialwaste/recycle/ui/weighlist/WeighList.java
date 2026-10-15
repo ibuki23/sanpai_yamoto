@@ -61,9 +61,6 @@ import javax.swing.WindowConstants;
 
 /**
  * 計量実績データを一覧表示する.
- *
- * @version 1.00
- * @author AKS.Takisawa
  */
 public class WeighList extends ListPanel implements Runnable {
 

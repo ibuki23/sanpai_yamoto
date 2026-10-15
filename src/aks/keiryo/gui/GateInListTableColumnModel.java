@@ -15,10 +15,6 @@ public class GateInListTableColumnModel extends DefaultTableColumnModel {
         TableColumn col = new TableColumn(GateInListTableModel.COLUMN_TIME);
         col.setHeaderValue("時間");
         col.setPreferredWidth(70);
-//    col.setCellRenderer(
-//      new CalendarTableCellRenderer(
-//        new SimpleDateFormat("yyyy/MM/dd HH:mm"),
-//        CalendarTableCellRenderer.LEFT));
         col.setCellRenderer(
                  new CalendarTableCellRenderer(
                           new SimpleDateFormat("HH:mm"),

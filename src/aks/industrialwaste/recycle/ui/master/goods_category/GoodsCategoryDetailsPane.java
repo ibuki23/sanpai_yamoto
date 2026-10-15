@@ -25,12 +25,6 @@ import aks.industrialwaste.database.SortCondition;
 import aks.industrialwaste.database.SortOrder;
 import aks.industrialwaste.ui.DetailsPanel;
 
-/**
- * 車種マスタの詳細を表示する.
- *
- * @version 1.00
- * @author K.Kuroda
- */
 public class GoodsCategoryDetailsPane extends DetailsPanel {
 
     private GoodsCategoryTableModel model_;
@@ -51,7 +45,6 @@ public class GoodsCategoryDetailsPane extends DetailsPanel {
     @Override
     protected void initComponents() {
         super.initComponents();
-//    Font font14 = FontUtility.getFont("メイリオ", Font.PLAIN, 14);
         Font font18 = FontUtility.getFont("メイリオ", Font.PLAIN, 14);
         // タイトル
         titleField_.setText("品目中分類マスタ詳細");
@@ -150,11 +143,6 @@ public class GoodsCategoryDetailsPane extends DetailsPanel {
                 chiefnameField_.requestFocusInWindow();
             }
         });
-//    addContainer(
-//      panel, chiefnameField_,
-//      1, 2, 1, 1, 0.0, 0.0,
-//      GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
-//      new Insets(2, 2, 2, 2), 0, 0);
 
         label = new JLabel("※同じ名称は登録できません。", JLabel.LEFT);
         label.setFont(font18);
@@ -258,13 +246,6 @@ public class GoodsCategoryDetailsPane extends DetailsPanel {
         }
         doClose();
 
-//        //リストの再描画
-//        SortCondition[] sort =
-//                new SortCondition[]{
-//            new SortCondition(
-//            new Column("sno", "sno", ColumnType.INT8),
-//            SortOrder.ASC)};
-//        model_.refresh(null, sort);
     }
 
     @Override
@@ -294,7 +275,6 @@ public class GoodsCategoryDetailsPane extends DetailsPanel {
         }
 
         nameField_.setText((String) columns_.get("remark_name"));
-//    chiefnameField_.setText((String)columns_.get("chief_name"));
 
         o = columns_.get("last_update");
         if (o instanceof Calendar) {
@@ -310,7 +290,6 @@ public class GoodsCategoryDetailsPane extends DetailsPanel {
 
             columns_.put("sno", 0);
             columns_.put("remark_name", "");
-//        columns_.put("chief_name","");
         }
     }
 
@@ -330,15 +309,6 @@ public class GoodsCategoryDetailsPane extends DetailsPanel {
                      JOptionPane.WARNING_MESSAGE);
             return false;
         }
-//    if ("".equals(chiefnameField_.getText().trim()))
-//    {
-//      JOptionPane.showMessageDialog(
-//        this,
-//        "代表者名を入力してください.",
-//        "警告",
-//        JOptionPane.WARNING_MESSAGE);
-//      return false;
-//    }
 
         return true;
     }
@@ -352,8 +322,6 @@ public class GoodsCategoryDetailsPane extends DetailsPanel {
                 nameField_.selectAll();
             } else if (source == snoField_) {
                 snoField_.selectAll();
-//            } else if (source == chiefnameField_) {
-//                chiefnameField_.selectAll();
             }
         }
 
@@ -363,10 +331,6 @@ public class GoodsCategoryDetailsPane extends DetailsPanel {
             if (source == nameField_) {
                 columns_.put("remark_name", nameField_.getText().trim());
             }
-//      if (source == chiefnameField_)
-//      {
-//        columns_.put("chief_name", chiefnameField_.getText().trim());
-//      }
             if (source == snoField_) {
                 columns_.put("sno", Integer.valueOf(snoField_.getText()));
             }
