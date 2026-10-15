@@ -2,7 +2,6 @@ package aks.keiryo.gui;
 
 import aks.industrialwaste.recycle.util.GoodsPriceResolver;
 import aks.keiryo.status.Status;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.KeyEventDispatcher;
@@ -29,14 +28,9 @@ import jp.co.astax.awt.FontUtility;
 
 /**
  * 矢本クリーンセンター向け料金区分・アスベスト選択を既存計量画面へ接続する。
- * jPanel3 は NetBeans のフリー・デザインで作成し、既存部品の配置を確定した後に
- * 料金区分行を絶対位置で差し込む。これにより GridBagLayout の再計算による画面崩れを防ぐ。
+ * 追加行は作らず、取扱品目行と既存の空き領域を利用して画面高さを変えない。
  */
 public final class WeighPriceIntegration {
-
-    private static final int PRICE_ROW_HEIGHT = 32;
-    private static final int PRICE_ROW_GAP = 4;
-    private static final int PRICE_ROW_SHIFT = PRICE_ROW_HEIGHT + PRICE_ROW_GAP;
 
     private static boolean installed;
     private static boolean syncing;
@@ -80,22 +74,15 @@ public final class WeighPriceIntegration {
         carIdField = (JTextField) field("car_id_").get(owner);
         unitValueField = (JTextField) field("unit_value_tex").get(owner);
 
-        JLabel label = new JLabel("　料金区分");
-        label.setFont(FontUtility.getFont("メイリオ", java.awt.Font.PLAIN, 18));
-        label.setForeground(Color.WHITE);
-        label.setBackground(new Color(0, 51, 153));
-        label.setOpaque(true);
-        label.setBorder(javax.swing.BorderFactory.createEtchedBorder(
-                 javax.swing.border.EtchedBorder.RAISED));
-
         priceCategoryCombo = new JComboBox<String>(new String[]{"通常", "新規", "既存", "その他"});
         priceCategoryCombo.setFont(FontUtility.getFont("メイリオ", java.awt.Font.PLAIN, 18));
+        priceCategoryCombo.setToolTipText("料金区分");
 
         asbestosCheck = new JCheckBox("アスベスト含有");
         asbestosCheck.setFont(FontUtility.getFont("メイリオ", java.awt.Font.PLAIN, 18));
         asbestosCheck.setOpaque(false);
 
-        installControlsInFreeDesign(panel, label);
+        installControlsInExistingRows(panel);
 
         ActionListener priceChanged = new ActionListener() {
             @Override
@@ -153,74 +140,105 @@ public final class WeighPriceIntegration {
     }
 
     /**
-     * NetBeans Free Design(GroupLayout) が一度決定した既存部品の座標を保持したまま
-     * null layout に切り替え、取扱品目と運搬業者の間へ料金区分行を追加する。
+     * 既存の画面高さを変えずに料金項目を配置する。
+     * 料金区分は取扱品目名(kind_jLab)を少し縮めた領域へ配置し、
+     * アスベストチェックは契約内容表示の右側を一部利用する。
+     * sub_message_ / txt契約内容表示 は実際に使用されているため削除しない。
      */
-    private static void installControlsInFreeDesign(JPanel panel, JLabel label) throws Exception {
-        JLabel goodsLabel = (JLabel) field("jLabel10").get(owner);
+    private static void installControlsInExistingRows(JPanel panel) throws Exception {
+        JPanel goodsPanel = (JPanel) field("jPanel1").get(owner);
+        JLabel kindLabel = (JLabel) field("kind_jLab").get(owner);
+        JLabel carryName = (JLabel) field("carry_name_").get(owner);
+        JLabel contractText = (JLabel) field("txt契約内容表示").get(owner);
 
         panel.doLayout();
+        goodsPanel.doLayout();
 
-        Rectangle goodsIdBounds = new Rectangle(goodsIdField.getBounds());
-        Rectangle goodsLabelBounds = new Rectangle(goodsLabel.getBounds());
-        Component[] existingComponents = panel.getComponents();
-
-        int nextRowY = Integer.MAX_VALUE;
-        for (Component component : existingComponents) {
-            int y = component.getY();
-            if (y > goodsIdBounds.y + 2 && y < nextRowY) {
-                nextRowY = y;
-            }
-        }
-
-        if (nextRowY == Integer.MAX_VALUE) {
-            nextRowY = goodsIdBounds.y + goodsIdBounds.height + PRICE_ROW_GAP;
-        }
-
-        int insertY = goodsIdBounds.y + goodsIdBounds.height + PRICE_ROW_GAP;
-        if (insertY >= nextRowY) {
-            insertY = nextRowY;
-        }
-
-        // Free Design の GroupLayout に実行時追加すると既存部品まで再計算されるため、
-        // 現在の配置をそのまま固定してから新しい1行を差し込む。
+        // Free Design(GroupLayout) の現在位置を固定し、以後の実行時追加で
+        // 既存行が押し下げられないようにする。
         panel.setLayout(null);
 
-        for (Component component : existingComponents) {
-            if (component.getY() >= nextRowY) {
-                Rectangle r = component.getBounds();
-                component.setBounds(r.x, r.y + PRICE_ROW_SHIFT, r.width, r.height);
+        Rectangle goodsPanelBounds = new Rectangle(goodsPanel.getBounds());
+        int goodsPanelWidth = Math.max(goodsPanelBounds.width, 600);
+        int rowHeight = Math.max(30, goodsPanelBounds.height);
+
+        // jPanel1 内だけは品目名・料金区分・搬入搬出表示を横並びで再配置する。
+        goodsPanel.setLayout(null);
+
+        int carryWidth = carryName.getWidth();
+        if (carryWidth <= 0) {
+            carryWidth = 130;
+        }
+        carryWidth = Math.max(90, Math.min(carryWidth, 130));
+
+        final int gap = 5;
+        final int priceLabelWidth = 72;
+        final int comboWidth = 110;
+
+        int kindWidth = goodsPanelWidth - carryWidth - priceLabelWidth - comboWidth - (gap * 4);
+        kindWidth = Math.max(250, kindWidth);
+
+        JLabel priceLabel = new JLabel("料金区分");
+        priceLabel.setFont(FontUtility.getFont("メイリオ", java.awt.Font.PLAIN, 16));
+        priceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        int x = 0;
+        kindLabel.setBounds(x, 0, kindWidth, rowHeight);
+        x += kindWidth + gap;
+        priceLabel.setBounds(x, 0, priceLabelWidth, rowHeight);
+        x += priceLabelWidth + gap;
+        priceCategoryCombo.setBounds(x, 0, comboWidth, rowHeight);
+        x += comboWidth + gap;
+        carryName.setBounds(x, 0, Math.max(70, goodsPanelWidth - x), rowHeight);
+
+        goodsPanel.add(priceLabel);
+        goodsPanel.add(priceCategoryCombo);
+        goodsPanel.setComponentZOrder(priceLabel, 0);
+        goodsPanel.setComponentZOrder(priceCategoryCombo, 0);
+
+        // txt契約内容表示 は契約内容表示に使用されているため残し、右側だけを
+        // アスベストチェック用に確保する。幅が不足する場合は sub_message_ 側を利用する。
+        Rectangle contractBounds = new Rectangle(contractText.getBounds());
+        int checkWidth = 175;
+        int checkGap = 8;
+        int minContractWidth = 260;
+
+        if (contractBounds.width >= minContractWidth + checkWidth + checkGap) {
+            int newContractWidth = contractBounds.width - checkWidth - checkGap;
+            contractText.setBounds(contractBounds.x, contractBounds.y,
+                    newContractWidth, contractBounds.height);
+            asbestosCheck.setBounds(contractBounds.x + newContractWidth + checkGap,
+                    contractBounds.y, checkWidth, contractBounds.height);
+        } else {
+            JLabel subMessage = (JLabel) field("sub_message_").get(owner);
+            Rectangle subBounds = new Rectangle(subMessage.getBounds());
+            int minSubWidth = 320;
+            if (subBounds.width >= minSubWidth + checkWidth + checkGap) {
+                int newSubWidth = subBounds.width - checkWidth - checkGap;
+                subMessage.setBounds(subBounds.x, subBounds.y,
+                        newSubWidth, subBounds.height);
+                asbestosCheck.setBounds(subBounds.x + newSubWidth + checkGap,
+                        subBounds.y, checkWidth, subBounds.height);
+            } else {
+                // 最終フォールバック。既存行を増やさず品目行の右端へ置く。
+                Rectangle gp = goodsPanel.getBounds();
+                asbestosCheck.setBounds(
+                        Math.max(0, gp.x + gp.width - checkWidth),
+                        gp.y, checkWidth, Math.max(30, gp.height));
             }
         }
 
-        int labelX = goodsLabelBounds.x;
-        int labelWidth = goodsLabelBounds.width;
-        if (labelWidth < 120) {
-            labelWidth = 130;
-        }
-
-        int comboX = goodsIdBounds.x;
-        int comboWidth = Math.max(110, goodsIdBounds.width + 40);
-        int checkX = comboX + comboWidth + 8;
-
-        label.setBounds(labelX, insertY, labelWidth, PRICE_ROW_HEIGHT);
-        priceCategoryCombo.setBounds(comboX, insertY, comboWidth, PRICE_ROW_HEIGHT);
-        asbestosCheck.setBounds(checkX, insertY, 180, PRICE_ROW_HEIGHT);
-
-        panel.add(label);
-        panel.add(priceCategoryCombo);
         panel.add(asbestosCheck);
-        panel.setComponentZOrder(label, 0);
-        panel.setComponentZOrder(priceCategoryCombo, 0);
         panel.setComponentZOrder(asbestosCheck, 0);
 
+        goodsPanel.repaint();
         panel.repaint();
 
         System.out.println(
-                 "WEIGH PRICE UI FREE DESIGN insertY=" + insertY
-                 + " nextRowY=" + nextRowY
-                 + " shift=" + PRICE_ROW_SHIFT
-                 + " panel=" + panel.getWidth() + "x" + panel.getHeight());
+                 "WEIGH PRICE UI INLINE goodsPanel=" + goodsPanelWidth + "x" + rowHeight
+                 + " kindWidth=" + kindWidth
+                 + " contract=" + contractBounds.width
+                 + " asbestos=" + asbestosCheck.getBounds());
     }
 
     private static void hookWeighButton(String fieldName) throws Exception {
