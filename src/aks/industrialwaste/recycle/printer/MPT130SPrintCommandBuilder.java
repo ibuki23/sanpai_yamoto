@@ -81,7 +81,7 @@ class MPT130SPrintCommandBuilder implements MPT130SDefine {
     }
 
     private static byte[] line(String value) {
-        return ByteStr.strcat(Arrays.asList(bytes(value), MTP_CR, MTP_CR));
+        return ByteStr.strcat(Arrays.asList(bytes(value), MTP_CR, MTP_LF));
     }
 
     private static byte[] bytes(String value) {
