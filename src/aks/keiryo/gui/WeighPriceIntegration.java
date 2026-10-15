@@ -79,7 +79,7 @@ public final class WeighPriceIntegration {
         priceCategoryCombo.setToolTipText("料金区分");
 
         asbestosCheck = new JCheckBox("アスベスト含有");
-        asbestosCheck.setFont(FontUtility.getFont("メイリオ", java.awt.Font.PLAIN, 18));
+        asbestosCheck.setFont(FontUtility.getFont("メイリオ", java.awt.Font.PLAIN, 14));
         asbestosCheck.setOpaque(false);
 
         installControlsInExistingRows(panel);
@@ -141,28 +141,28 @@ public final class WeighPriceIntegration {
 
     /**
      * 既存の画面高さを変えずに料金項目を配置する。
-     * 料金区分は取扱品目名(kind_jLab)を少し縮めた領域へ配置し、
-     * アスベストチェックは契約内容表示の右側を一部利用する。
-     * sub_message_ / txt契約内容表示 は実際に使用されているため削除しない。
+     * 料金区分の文言は表示せず、料金区分コンボとアスベストチェックの左端を
+     * 売上区分（掛け/現金）コンボの左端へ揃える。
      */
     private static void installControlsInExistingRows(JPanel panel) throws Exception {
         JPanel goodsPanel = (JPanel) field("jPanel1").get(owner);
         JLabel kindLabel = (JLabel) field("kind_jLab").get(owner);
         JLabel carryName = (JLabel) field("carry_name_").get(owner);
         JLabel contractText = (JLabel) field("txt契約内容表示").get(owner);
+        JComboBox salesCategoryCombo = (JComboBox) field("cmb売上区分").get(owner);
 
         panel.doLayout();
         goodsPanel.doLayout();
 
-        // Free Design(GroupLayout) の現在位置を固定し、以後の実行時追加で
+        // Free Design(GroupLayout) の現在位置を固定し、実行時の追加で
         // 既存行が押し下げられないようにする。
         panel.setLayout(null);
 
         Rectangle goodsPanelBounds = new Rectangle(goodsPanel.getBounds());
+        Rectangle salesComboBounds = new Rectangle(salesCategoryCombo.getBounds());
         int goodsPanelWidth = Math.max(goodsPanelBounds.width, 600);
         int rowHeight = Math.max(30, goodsPanelBounds.height);
 
-        // jPanel1 内だけは品目名・料金区分・搬入搬出表示を横並びで再配置する。
         goodsPanel.setLayout(null);
 
         int carryWidth = carryName.getWidth();
@@ -172,61 +172,30 @@ public final class WeighPriceIntegration {
         carryWidth = Math.max(90, Math.min(carryWidth, 130));
 
         final int gap = 5;
-        final int priceLabelWidth = 72;
-        final int comboWidth = 110;
+        final int comboWidth = Math.max(95, salesComboBounds.width);
 
-        int kindWidth = goodsPanelWidth - carryWidth - priceLabelWidth - comboWidth - (gap * 4);
-        kindWidth = Math.max(250, kindWidth);
+        // cmb売上区分 は jPanel3 直下、料金区分コンボは jPanel1 内なので座標を変換する。
+        int comboX = salesComboBounds.x - goodsPanelBounds.x;
+        comboX = Math.max(carryWidth + gap + 250, Math.min(comboX, goodsPanelWidth - comboWidth));
 
-        JLabel priceLabel = new JLabel("料金区分");
-        priceLabel.setFont(FontUtility.getFont("メイリオ", java.awt.Font.PLAIN, 16));
-        priceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        // 搬入/搬出表示を料金区分コンボの左へ移動し、残りを品目名に使う。
+        int carryX = comboX - gap - carryWidth;
+        int kindWidth = Math.max(250, carryX - gap);
 
-        int x = 0;
-        kindLabel.setBounds(x, 0, kindWidth, rowHeight);
-        x += kindWidth + gap;
-        priceLabel.setBounds(x, 0, priceLabelWidth, rowHeight);
-        x += priceLabelWidth + gap;
-        priceCategoryCombo.setBounds(x, 0, comboWidth, rowHeight);
-        x += comboWidth + gap;
-        carryName.setBounds(x, 0, Math.max(70, goodsPanelWidth - x), rowHeight);
+        kindLabel.setBounds(0, 0, kindWidth, rowHeight);
+        carryName.setBounds(carryX, 0, carryWidth, rowHeight);
+        priceCategoryCombo.setBounds(comboX, 0, comboWidth, rowHeight);
 
-        goodsPanel.add(priceLabel);
         goodsPanel.add(priceCategoryCombo);
-        goodsPanel.setComponentZOrder(priceLabel, 0);
         goodsPanel.setComponentZOrder(priceCategoryCombo, 0);
 
-        // txt契約内容表示 は契約内容表示に使用されているため残し、右側だけを
-        // アスベストチェック用に確保する。幅が不足する場合は sub_message_ 側を利用する。
+        // アスベストチェックも「掛け/現金」コンボと同じX座標から開始する。
+        // 右端までの幅に合わせ、表示が切れにくいようフォントを少し小さくする。
         Rectangle contractBounds = new Rectangle(contractText.getBounds());
-        int checkWidth = 175;
-        int checkGap = 8;
-        int minContractWidth = 260;
-
-        if (contractBounds.width >= minContractWidth + checkWidth + checkGap) {
-            int newContractWidth = contractBounds.width - checkWidth - checkGap;
-            contractText.setBounds(contractBounds.x, contractBounds.y,
-                    newContractWidth, contractBounds.height);
-            asbestosCheck.setBounds(contractBounds.x + newContractWidth + checkGap,
-                    contractBounds.y, checkWidth, contractBounds.height);
-        } else {
-            JLabel subMessage = (JLabel) field("sub_message_").get(owner);
-            Rectangle subBounds = new Rectangle(subMessage.getBounds());
-            int minSubWidth = 320;
-            if (subBounds.width >= minSubWidth + checkWidth + checkGap) {
-                int newSubWidth = subBounds.width - checkWidth - checkGap;
-                subMessage.setBounds(subBounds.x, subBounds.y,
-                        newSubWidth, subBounds.height);
-                asbestosCheck.setBounds(subBounds.x + newSubWidth + checkGap,
-                        subBounds.y, checkWidth, subBounds.height);
-            } else {
-                // 最終フォールバック。既存行を増やさず品目行の右端へ置く。
-                Rectangle gp = goodsPanel.getBounds();
-                asbestosCheck.setBounds(
-                        Math.max(0, gp.x + gp.width - checkWidth),
-                        gp.y, checkWidth, Math.max(30, gp.height));
-            }
-        }
+        int asbestosX = salesComboBounds.x;
+        int asbestosWidth = Math.max(105, panel.getWidth() - asbestosX - 4);
+        asbestosCheck.setBounds(asbestosX, contractBounds.y,
+                asbestosWidth, Math.max(30, contractBounds.height));
 
         panel.add(asbestosCheck);
         panel.setComponentZOrder(asbestosCheck, 0);
@@ -235,9 +204,11 @@ public final class WeighPriceIntegration {
         panel.repaint();
 
         System.out.println(
-                 "WEIGH PRICE UI INLINE goodsPanel=" + goodsPanelWidth + "x" + rowHeight
+                 "WEIGH PRICE UI ALIGN salesX=" + salesComboBounds.x
+                 + " goodsPanelX=" + goodsPanelBounds.x
+                 + " comboX=" + comboX
+                 + " carryX=" + carryX
                  + " kindWidth=" + kindWidth
-                 + " contract=" + contractBounds.width
                  + " asbestos=" + asbestosCheck.getBounds());
     }
 
