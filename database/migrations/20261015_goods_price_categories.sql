@@ -1,0 +1,60 @@
+-- 矢本クリーンセンター向け 料金区分・アスベスト対応
+-- 2026-10-15
+--
+-- 方針:
+--   * 既存の通常単価 unit_value は残す。
+--   * 新規 / 既存 / その他の単価を意味が分かるカラム名で追加する。
+--   * アスベスト含有時も新規 / 既存 / その他の3単価を持つ。
+--   * 現行 unit_value_a / b / c は既存コード互換のため当面残し、
+--     初回移行時に new / existing / other へ値をコピーする。
+--   * 計量時のアスベスト有無を実績として保持できるよう、
+--     gate_in_data / weigh_data に asbestos_flag を追加する。
+
+BEGIN;
+
+ALTER TABLE public.m_goods_kind
+    ADD COLUMN IF NOT EXISTS unit_value_new integer NOT NULL DEFAULT 0,
+    ADD COLUMN IF NOT EXISTS unit_value_existing integer NOT NULL DEFAULT 0,
+    ADD COLUMN IF NOT EXISTS unit_value_other integer NOT NULL DEFAULT 0,
+    ADD COLUMN IF NOT EXISTS asbestos_unit_value_new integer NOT NULL DEFAULT 0,
+    ADD COLUMN IF NOT EXISTS asbestos_unit_value_existing integer NOT NULL DEFAULT 0,
+    ADD COLUMN IF NOT EXISTS asbestos_unit_value_other integer NOT NULL DEFAULT 0;
+
+COMMENT ON COLUMN public.m_goods_kind.unit_value IS '通常単価（既存仕様互換）';
+COMMENT ON COLUMN public.m_goods_kind.unit_value_new IS '新規顧客単価';
+COMMENT ON COLUMN public.m_goods_kind.unit_value_existing IS '既存顧客単価';
+COMMENT ON COLUMN public.m_goods_kind.unit_value_other IS 'その他顧客単価';
+COMMENT ON COLUMN public.m_goods_kind.asbestos_unit_value_new IS 'アスベスト含有・新規顧客単価';
+COMMENT ON COLUMN public.m_goods_kind.asbestos_unit_value_existing IS 'アスベスト含有・既存顧客単価';
+COMMENT ON COLUMN public.m_goods_kind.asbestos_unit_value_other IS 'アスベスト含有・その他顧客単価';
+
+-- 現行A/B/Cの値を新名称へ初回移行する。
+-- すでに新カラム側に値が設定されている場合は上書きしない。
+UPDATE public.m_goods_kind
+SET unit_value_new = CASE
+        WHEN unit_value_new = 0 THEN COALESCE(unit_value_a, 0)
+        ELSE unit_value_new
+    END,
+    unit_value_existing = CASE
+        WHEN unit_value_existing = 0 THEN COALESCE(unit_value_b, 0)
+        ELSE unit_value_existing
+    END,
+    unit_value_other = CASE
+        WHEN unit_value_other = 0 THEN COALESCE(unit_value_c, 0)
+        ELSE unit_value_other
+    END;
+
+COMMENT ON COLUMN public.m_goods_kind.unit_value_a IS '旧カラム: unit_value_newへ移行（互換用）';
+COMMENT ON COLUMN public.m_goods_kind.unit_value_b IS '旧カラム: unit_value_existingへ移行（互換用）';
+COMMENT ON COLUMN public.m_goods_kind.unit_value_c IS '旧カラム: unit_value_otherへ移行（互換用）';
+
+ALTER TABLE public.gate_in_data
+    ADD COLUMN IF NOT EXISTS asbestos_flag boolean NOT NULL DEFAULT false;
+
+ALTER TABLE public.weigh_data
+    ADD COLUMN IF NOT EXISTS asbestos_flag boolean NOT NULL DEFAULT false;
+
+COMMENT ON COLUMN public.gate_in_data.asbestos_flag IS 'アスベスト含有フラグ false:無 true:有';
+COMMENT ON COLUMN public.weigh_data.asbestos_flag IS 'アスベスト含有フラグ false:無 true:有';
+
+COMMIT;
