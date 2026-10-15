@@ -48,12 +48,16 @@ public class MPT130SGetPrinterThread implements Runnable, MPT130SDefine {
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 shipmentSno = sqlCommon.GetShipmentPrintOrder();
+                System.out.println("MPT130S PRINT CHECK shipmentSno=" + shipmentSno);
+
                 if (shipmentSno > 0) {
                     Thread.sleep(WAIT_AFTER_SEND);
                     if (printoutWeight(shipmentSno)) {
                         Thread.sleep(WAIT_AFTER_SEND);
                         sqlCommon.SetPrintOrder(shipmentSno, false);
+                        System.out.println("MPT130S PRINT COMPLETE sno=" + shipmentSno);
                     } else {
+                        System.out.println("MPT130S PRINT FAILED sno=" + shipmentSno);
                         setup();
                     }
                     shipmentSno = -1;
@@ -69,18 +73,48 @@ public class MPT130SGetPrinterThread implements Runnable, MPT130SDefine {
     }
 
     boolean printoutWeight(long sno) {
+        System.out.println("MPT130S PRINT START sno=" + sno);
+
         ShipmentStruct shipment = new ShipmentStruct();
-        if (sqlCommon.GetShipmentData(sno, shipment) < 0
-                 || !shipment.GetBoolean("printer_print_order")) {
+        int getShipmentResult = sqlCommon.GetShipmentData(sno, shipment);
+        boolean printOrder = shipment.GetBoolean("printer_print_order");
+        System.out.println(
+                 "MPT130S SHIPMENT LOAD sno=" + sno
+                 + " result=" + getShipmentResult
+                 + " printer_print_order=" + printOrder
+        );
+
+        if (getShipmentResult < 0 || !printOrder) {
+            System.out.println("MPT130S PRINT ABORT sno=" + sno);
             return false;
         }
 
         List<byte[]> commands = MPT130SPrintCommandBuilder.build(shipment);
+        System.out.println("MPT130S COMMAND COUNT sno=" + sno + " count=" + commands.size());
+
+        int commandIndex = 0;
         for (byte[] command : commands) {
+            commandIndex++;
+            System.out.println(
+                     "MPT130S SEND sno=" + sno
+                     + " command=" + commandIndex + "/" + commands.size()
+                     + " bytes=" + (command == null ? -1 : command.length)
+            );
+
             if (!transport.send(command)) {
-                System.out.println("MPT130S printer send failed:" + transport.getDescription());
+                System.out.println(
+                         "MPT130S printer send failed:" + transport.getDescription()
+                         + " sno=" + sno
+                         + " command=" + commandIndex
+                );
                 return false;
             }
+
+            System.out.println(
+                     "MPT130S SEND OK sno=" + sno
+                     + " command=" + commandIndex + "/" + commands.size()
+            );
+
             try {
                 Thread.sleep(WAIT_AFTER_SEND);
             } catch (InterruptedException e) {
