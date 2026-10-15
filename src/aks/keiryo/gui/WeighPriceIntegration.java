@@ -4,10 +4,9 @@ import aks.industrialwaste.recycle.util.GoodsPriceResolver;
 import aks.keiryo.status.Status;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 import java.awt.KeyEventDispatcher;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -30,9 +29,14 @@ import jp.co.astax.awt.FontUtility;
 
 /**
  * 矢本クリーンセンター向け料金区分・アスベスト選択を既存計量画面へ接続する。
- * 既存NetBeans生成画面を大きく崩さないため、空いている6行目へ動的に追加する。
+ * jPanel3 は NetBeans のフリー・デザインで作成し、既存部品の配置を確定した後に
+ * 料金区分行を絶対位置で差し込む。これにより GridBagLayout の再計算による画面崩れを防ぐ。
  */
 public final class WeighPriceIntegration {
+
+    private static final int PRICE_ROW_HEIGHT = 32;
+    private static final int PRICE_ROW_GAP = 4;
+    private static final int PRICE_ROW_SHIFT = PRICE_ROW_HEIGHT + PRICE_ROW_GAP;
 
     private static boolean installed;
     private static boolean syncing;
@@ -83,36 +87,15 @@ public final class WeighPriceIntegration {
         label.setOpaque(true);
         label.setBorder(javax.swing.BorderFactory.createEtchedBorder(
                  javax.swing.border.EtchedBorder.RAISED));
-        label.setMinimumSize(new java.awt.Dimension(150, 30));
-        label.setPreferredSize(new java.awt.Dimension(150, 30));
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 6;
-        gbc.anchor = GridBagConstraints.EAST;
-        gbc.insets = new Insets(0, 0, 0, 5);
-        panel.add(label, gbc);
 
         priceCategoryCombo = new JComboBox<String>(new String[]{"通常", "新規", "既存", "その他"});
         priceCategoryCombo.setFont(FontUtility.getFont("メイリオ", java.awt.Font.PLAIN, 18));
-        priceCategoryCombo.setMinimumSize(new java.awt.Dimension(130, 35));
-        priceCategoryCombo.setPreferredSize(new java.awt.Dimension(130, 35));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 6;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(2, 0, 2, 2);
-        panel.add(priceCategoryCombo, gbc);
 
         asbestosCheck = new JCheckBox("アスベスト含有");
         asbestosCheck.setFont(FontUtility.getFont("メイリオ", java.awt.Font.PLAIN, 18));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 6;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(2, 2, 2, 5);
-        panel.add(asbestosCheck, gbc);
+        asbestosCheck.setOpaque(false);
+
+        installControlsInFreeDesign(panel, label);
 
         ActionListener priceChanged = new ActionListener() {
             @Override
@@ -164,10 +147,80 @@ public final class WeighPriceIntegration {
             }
         });
 
-        panel.revalidate();
         panel.repaint();
         loadGateContext();
         applySelection(false);
+    }
+
+    /**
+     * NetBeans Free Design(GroupLayout) が一度決定した既存部品の座標を保持したまま
+     * null layout に切り替え、取扱品目と運搬業者の間へ料金区分行を追加する。
+     */
+    private static void installControlsInFreeDesign(JPanel panel, JLabel label) throws Exception {
+        JLabel goodsLabel = (JLabel) field("jLabel10").get(owner);
+
+        panel.doLayout();
+
+        Rectangle goodsIdBounds = new Rectangle(goodsIdField.getBounds());
+        Rectangle goodsLabelBounds = new Rectangle(goodsLabel.getBounds());
+        Component[] existingComponents = panel.getComponents();
+
+        int nextRowY = Integer.MAX_VALUE;
+        for (Component component : existingComponents) {
+            int y = component.getY();
+            if (y > goodsIdBounds.y + 2 && y < nextRowY) {
+                nextRowY = y;
+            }
+        }
+
+        if (nextRowY == Integer.MAX_VALUE) {
+            nextRowY = goodsIdBounds.y + goodsIdBounds.height + PRICE_ROW_GAP;
+        }
+
+        int insertY = goodsIdBounds.y + goodsIdBounds.height + PRICE_ROW_GAP;
+        if (insertY >= nextRowY) {
+            insertY = nextRowY;
+        }
+
+        // Free Design の GroupLayout に実行時追加すると既存部品まで再計算されるため、
+        // 現在の配置をそのまま固定してから新しい1行を差し込む。
+        panel.setLayout(null);
+
+        for (Component component : existingComponents) {
+            if (component.getY() >= nextRowY) {
+                Rectangle r = component.getBounds();
+                component.setBounds(r.x, r.y + PRICE_ROW_SHIFT, r.width, r.height);
+            }
+        }
+
+        int labelX = goodsLabelBounds.x;
+        int labelWidth = goodsLabelBounds.width;
+        if (labelWidth < 120) {
+            labelWidth = 130;
+        }
+
+        int comboX = goodsIdBounds.x;
+        int comboWidth = Math.max(110, goodsIdBounds.width + 40);
+        int checkX = comboX + comboWidth + 8;
+
+        label.setBounds(labelX, insertY, labelWidth, PRICE_ROW_HEIGHT);
+        priceCategoryCombo.setBounds(comboX, insertY, comboWidth, PRICE_ROW_HEIGHT);
+        asbestosCheck.setBounds(checkX, insertY, 180, PRICE_ROW_HEIGHT);
+
+        panel.add(label);
+        panel.add(priceCategoryCombo);
+        panel.add(asbestosCheck);
+        panel.setComponentZOrder(label, 0);
+        panel.setComponentZOrder(priceCategoryCombo, 0);
+        panel.setComponentZOrder(asbestosCheck, 0);
+
+        panel.repaint();
+
+        System.out.println(
+                 "WEIGH PRICE UI FREE DESIGN insertY=" + insertY
+                 + " nextRowY=" + nextRowY
+                 + " shift=" + PRICE_ROW_SHIFT
+                 + " panel=" + panel.getWidth() + "x" + panel.getHeight());
     }
 
     private static void hookWeighButton(String fieldName) throws Exception {
