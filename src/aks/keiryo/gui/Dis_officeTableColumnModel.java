@@ -1,5 +1,6 @@
 package aks.keiryo.gui;
 
+
 import java.text.DecimalFormat;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
