@@ -328,6 +328,45 @@ public final class WeighPriceIntegration {
         }
     }
 
+    /**
+     * Apply the bill master default only when the bill ID field loses focus.
+     * Loading an existing weighing record continues to use its saved context.
+     */
+    public static void loadBillPriceCategory(String billIdText) {
+        if (!installed || syncing || con == null || priceCategoryCombo == null) {
+            return;
+        }
+
+        int category = GoodsPriceResolver.PRICE_CATEGORY_NORMAL;
+        int billId = intValue(billIdText);
+        if (billId > 0) {
+            String sql = "select price_category from m_bill where id=? and delete_flag<>true";
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setInt(1, billId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        category = rs.getInt("price_category");
+                    }
+                }
+            } catch (Exception e) {
+                java.util.logging.Logger.getLogger(WeighPriceIntegration.class.getName())
+                        .log(java.util.logging.Level.SEVERE, "WEIGH BILL PRICE CATEGORY LOAD ERROR", e);
+                return;
+            }
+        }
+        if (category < 0 || category > 3) {
+            category = GoodsPriceResolver.PRICE_CATEGORY_NORMAL;
+        }
+
+        syncing = true;
+        try {
+            priceCategoryCombo.setSelectedIndex(category);
+        } finally {
+            syncing = false;
+        }
+        applySelection(true);
+        persistGateContext();
+    }
     private static void applySelection(boolean showMessage) {
         if (syncing || MainPanel.mStatus == null
                 || priceCategoryCombo == null || asbestosCheck == null) {

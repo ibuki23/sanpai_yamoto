@@ -5124,6 +5124,8 @@ public class MainPanel extends javax.swing.JPanel {
         //現金区分の自動入力の処理を加える 
         cmb売上区分.setSelectedItem(get売上区分());
 
+        WeighPriceIntegration.loadBillPriceCategory(bill_no_tex.getText());
+
     }//GEN-LAST:event_bill_no_texFocusLost
 
     private void bill_no_texKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bill_no_texKeyPressed
