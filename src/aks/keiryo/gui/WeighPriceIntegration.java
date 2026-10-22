@@ -39,6 +39,7 @@ public final class WeighPriceIntegration {
     private static MainPanel owner;
     private static Connection con;
     private static long beforeWeighSno = -1L;
+    private static Integer loadedContextCarId;
 
     private WeighPriceIntegration() {
     }
@@ -295,11 +296,16 @@ public final class WeighPriceIntegration {
         }
 
         int carId = intValue(carIdField.getText());
+        // UpdateView sets even unchanged text, firing remove/insert document events.
+        if (loadedContextCarId != null && loadedContextCarId == carId) {
+            return;
+        }
         syncing = true;
         try {
             if (carId <= 0) {
                 priceCategoryCombo.setSelectedIndex(GoodsPriceResolver.PRICE_CATEGORY_NORMAL);
                 asbestosCheck.setSelected(false);
+                loadedContextCarId = carId;
                 return;
             }
 
@@ -321,6 +327,7 @@ public final class WeighPriceIntegration {
                     }
                 }
             }
+            loadedContextCarId = carId;
         } catch (Exception e) {
             System.out.println("WEIGH PRICE CONTEXT LOAD ERROR:" + e);
         } finally {
@@ -336,6 +343,9 @@ public final class WeighPriceIntegration {
         if (!installed || syncing || con == null || priceCategoryCombo == null) {
             return;
         }
+
+        // Consume any pending car-context load before applying the bill override.
+        loadGateContext();
 
         int category = GoodsPriceResolver.PRICE_CATEGORY_NORMAL;
         int billId = intValue(billIdText);
