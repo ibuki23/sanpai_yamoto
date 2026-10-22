@@ -21,17 +21,9 @@ class MPT130STcpTransport implements MPT130STransport {
 
     @Override
     public boolean open() {
-        System.out.println(
-                "MPT130S OPEN TRY " + address + ":" + port
-                + " timeout=" + timeout
-                + " thread=" + Thread.currentThread().getName());
         close();
         nport = new NPort(address, port, timeout);
         boolean opened = nport.Open() == NPort.NPORT_OK;
-        System.out.println(
-                "MPT130S OPEN RESULT " + address + ":" + port
-                + " opened=" + opened
-                + " thread=" + Thread.currentThread().getName());
         return opened;
     }
 

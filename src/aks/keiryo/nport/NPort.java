@@ -1,6 +1,8 @@
 package aks.keiryo.nport;
 
 import java.net.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NPort {
 
@@ -13,6 +15,43 @@ public class NPort {
     private int mHostPort;
     private int mTimeOut;
     private Socket mSock = null;
+
+    // Shared by endpoint: MPT130S recreates NPort on each open attempt.
+    private static final Map<String, Long> retryFailures = new HashMap<>();
+
+    private void logFailure(String operation, Exception error) {
+        logRetry(operation, error);
+    }
+
+    private void logRecovery(String operation) {
+        logRetry(operation, null);
+    }
+
+    private void logRetry(String operation, Exception error) {
+        String endpoint = mHostName + ":" + mHostPort;
+        String key = operation + "/" + endpoint;
+        synchronized (retryFailures) {
+            Long previous = retryFailures.get(key);
+            long failures = previous == null ? 0 : previous;
+            if (error == null) {
+                if (failures > 0) {
+                    System.out.println("NPORT " + operation + " RECOVERED " + endpoint
+                            + " failures=" + failures
+                            + " thread=" + Thread.currentThread().getName());
+                    retryFailures.remove(key);
+                }
+            } else {
+                failures++;
+                retryFailures.put(key, failures);
+                if (failures == 1 || failures % 10 == 0) {
+                    System.out.println("NPORT " + operation + " FAILED " + endpoint
+                            + " failures=" + failures + " timeout=" + mTimeOut
+                            + " error=" + error
+                            + " thread=" + Thread.currentThread().getName());
+                }
+            }
+        }
+    }
 
     //コンストラクタ
     //hostname:接続先アドレス
@@ -31,23 +70,14 @@ public class NPort {
 
         Close();//一旦終了
 
-        System.out.println(
-                "NPORT OPEN TRY " + mHostName + ":" + mHostPort
-                + " timeout=" + mTimeOut
-                + " thread=" + Thread.currentThread().getName());
-
         try {
 
             mSock = new Socket();
             mSock.connect(new InetSocketAddress(InetAddress.getByName(mHostName), mHostPort), mTimeOut);
             ret = NPORT_OK;
-            System.out.println(
-                    "NPORT OPEN OK " + mHostName + ":" + mHostPort
-                    + " thread=" + Thread.currentThread().getName());
+            logRecovery("OPEN");
         } catch (Exception e) {
-            System.out.println(
-                    "nport-open-err/" + e + ":" + mHostName + ":" + mHostPort
-                    + " thread=" + Thread.currentThread().getName());
+            logFailure("OPEN", e);
         }
 
         return ret;
@@ -85,11 +115,10 @@ public class NPort {
             }
 
             mSock.getOutputStream().write(data, 0, len);
+            logRecovery("SEND");
             ret = NPORT_OK;
         } catch (Exception e) {
-            System.out.println(
-                    "nport-send-err/" + e + ":" + mHostName + ":" + mHostPort
-                    + " thread=" + Thread.currentThread().getName());
+            logFailure("SEND", e);
             Open();
         }
 

@@ -41,9 +41,8 @@ public class MPT130SGetPrinterThread implements Runnable, MPT130SDefine {
     }
 
     public final void setup() {
-        if (!transport.open()) {
-            System.out.println("MPT130S printer open failed:" + transport.getDescription());
-        }
+        // NPort logs connection failures and recovery with retry suppression.
+        transport.open();
     }
 
     @Override

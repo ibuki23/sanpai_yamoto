@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 import javax.swing.table.AbstractTableModel;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -197,7 +198,7 @@ public class BillTableModel extends AbstractTableModel {
             }
 
         } catch (Exception e) {
-            logger_.warning(e.toString());
+            logger_.log(Level.SEVERE, "BillTableModel.insert failed", e);
             return false;
         }
 
@@ -250,7 +251,7 @@ public class BillTableModel extends AbstractTableModel {
                 st.close();
             }
         } catch (Exception e) {
-            logger_.warning(e.toString());
+            logger_.log(Level.SEVERE, "BillTableModel.update failed", e);
             return false;
         }
 
