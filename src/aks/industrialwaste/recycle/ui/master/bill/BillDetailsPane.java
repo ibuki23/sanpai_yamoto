@@ -430,12 +430,7 @@ public class BillDetailsPane extends DetailsPanel {
         priceCategoryField_.setFont(font14);
         priceCategoryField_.setMinimumSize(new Dimension(150, 30));
         priceCategoryField_.setPreferredSize(new Dimension(150, 30));
-        priceCategoryField_.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                columns_.put("price_category", priceCategoryField_.getSelectedIndex());
-            }
-        });
+        // Capture the selection in doRegister; view initialization must not overwrite columns_.
         addContainer(
                  panel, priceCategoryField_,
                  1, 12, 1, 1, 0.0, 0.0,
