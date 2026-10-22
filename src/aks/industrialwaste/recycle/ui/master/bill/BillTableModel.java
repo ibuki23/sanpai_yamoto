@@ -161,8 +161,8 @@ public class BillTableModel extends AbstractTableModel {
                          .append("insert into m_bill ")
                          .append("(id, name, address1, ")
                          .append("address2, p_name, zip_code, tel, ")
-                         .append("kana, bundle_day, pay_class, tax_no, keisyo, fixed_flag, fixed_value, 売上区分)")
-                         .append("values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")
+                         .append("kana, bundle_day, pay_class, tax_no, keisyo, fixed_flag, fixed_value, 売上区分, price_category)")
+                         .append("values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")
                          .toString();
                 PreparedStatement ps = con_.prepareStatement(s);
                 try {
@@ -182,6 +182,7 @@ public class BillTableModel extends AbstractTableModel {
                     ps.setObject(13, newdata.get("fixed_flag"));
                     ps.setObject(14, newdata.get("fixed_value"));
                     ps.setObject(15, newdata.get("売上区分"));
+                    ps.setObject(16, newdata.get("price_category"));
                     ps.executeUpdate();
                 } finally {
                     ps.close();
@@ -214,7 +215,7 @@ public class BillTableModel extends AbstractTableModel {
                          .append("address2 = ?, p_name = ?, ")
                          .append("zip_code = ?, tel = ?, kana = ?, ")
                          .append("bundle_day = ?, pay_class = ? , id = ?, tax_no = ?, keisyo = ?, ")
-                         .append("fixed_flag = ?, fixed_value = ?, 売上区分 = ? ")
+                         .append("fixed_flag = ?, fixed_value = ?, 売上区分 = ?, price_category = ? ")
                          .append("where sno = ?;")
                          .toString();
                 PreparedStatement ps = con_.prepareStatement(s);
@@ -234,7 +235,8 @@ public class BillTableModel extends AbstractTableModel {
                     ps.setObject(13, updata.get("fixed_flag"));
                     ps.setObject(14, updata.get("fixed_value"));
                     ps.setObject(15, updata.get("売上区分"));
-                    ps.setObject(16, updata.get("sno"));
+                    ps.setObject(16, updata.get("price_category"));
+                    ps.setObject(17, updata.get("sno"));
                     ps.executeUpdate();
                 } finally {
                     ps.close();
