@@ -55,6 +55,7 @@ public class BillDetailsPane extends DetailsPanel {
     private JTextField id_serachField_;
     private JTextField keisyoField_;
     private JComboBox 売上区分Field_;
+    private JComboBox<String> priceCategoryField_;
 
     private JCheckBox fixed_flag_;//定額請求フラグ
     private JTextField fixed_value_;//定額請求額
@@ -74,6 +75,7 @@ public class BillDetailsPane extends DetailsPanel {
         titleField_.setText("請求先マスタ詳細");
         String[] tax_no_ = new String[]{"四捨五入", "切り捨て", "切り上げ"};
         String[] 売上区分 = new String[]{"現金", "掛け"};
+        String[] priceCategories = new String[]{"通常", "新規", "既存", "その他"};
         String[] pay_day_ = new String[]{"翌月", "翌々月", "翌々々月"};
 
         // 詳細 - 左側
@@ -416,6 +418,30 @@ public class BillDetailsPane extends DetailsPanel {
                  GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
                  new Insets(2, 2, 2, 2), 0, 0);
 
+        // 売上区分（現金/掛け）とは別に請求先の料金区分を設定する。
+        label = new JLabel("料金区分", JLabel.LEFT);
+        label.setFont(font14);
+        addContainer(
+                 panel, label,
+                 0, 12, 1, 1, 0.0, 0.0,
+                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
+                 new Insets(2, 2, 2, 2), 0, 0);
+        priceCategoryField_ = new JComboBox<String>(priceCategories);
+        priceCategoryField_.setFont(font14);
+        priceCategoryField_.setMinimumSize(new Dimension(150, 30));
+        priceCategoryField_.setPreferredSize(new Dimension(150, 30));
+        priceCategoryField_.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                columns_.put("price_category", priceCategoryField_.getSelectedIndex());
+            }
+        });
+        addContainer(
+                 panel, priceCategoryField_,
+                 1, 12, 1, 1, 0.0, 0.0,
+                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
+                 new Insets(2, 2, 2, 2), 0, 0);
+
         fixed_flag_ = new JCheckBox("処分料の定額請求をする場合にはチェックしてください。");
         fixed_flag_.setFont(font14);
         fixed_flag_.addFocusListener(new ColumnUpdater());
@@ -624,6 +650,7 @@ public class BillDetailsPane extends DetailsPanel {
         if (!checkInputItems()) {
             return;
         }
+        columns_.put("price_category", priceCategoryField_.getSelectedIndex());
 
         if (0 > row_) {
             BillJournal.recordJournal(
@@ -736,6 +763,10 @@ public class BillDetailsPane extends DetailsPanel {
             tax_no_Field_.setSelectedIndex((Integer) o);
         }
 
+        o = columns_.get("price_category");
+        int priceCategory = o instanceof Number ? ((Number) o).intValue() : 0;
+        priceCategoryField_.setSelectedIndex(priceCategory >= 0 && priceCategory <= 3 ? priceCategory : 0);
+
         o = columns_.get("売上区分");
         if (o instanceof String) {
             売上区分Field_.setSelectedItem(o);
@@ -751,6 +782,19 @@ public class BillDetailsPane extends DetailsPanel {
         columns_.clear();
         if (0 <= row_) {
             columns_.putAll(model_.getColumns(row_));
+            // v0_bill の既存ビュー定義に依存せず、追加項目は実テーブルから取得。
+            Object sno = columns_.get("sno");
+            if (sno instanceof Number) {
+                try (PreparedStatement ps = model_.getConnection().prepareStatement(
+                        "select price_category from m_bill where sno = ?")) {
+                    ps.setObject(1, sno);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        columns_.put("price_category", rs.next() ? rs.getInt(1) : 0);
+                    }
+                } catch (SQLException e) {
+                    throw new IllegalStateException("請求先の料金区分を取得できません。DB移行を確認してください。", e);
+                }
+            }
         } else {
             columns_.put("id", 0);
             columns_.put("name", "");
@@ -767,6 +811,7 @@ public class BillDetailsPane extends DetailsPanel {
             columns_.put("keisyo", "");
             columns_.put("fixed_flag", false);
             columns_.put("fixed_value", 0);
+            columns_.put("price_category", 0);
 
         }
     }
@@ -784,6 +829,7 @@ public class BillDetailsPane extends DetailsPanel {
         pay_dayField_.setSelectedIndex(0);
         tax_no_Field_.setSelectedIndex(0);
         売上区分Field_.setSelectedIndex(0);
+        priceCategoryField_.setSelectedIndex(0);
         keisyoField_.setText("");
         fixed_flag_.setSelected(false);
         fixed_value_.setText("0");
